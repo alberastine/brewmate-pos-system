@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.brewmate.R;
 import com.example.brewmate.utils.SessionManager;
@@ -24,6 +25,20 @@ public class CashierDashboardActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        findViewById(R.id.cardNewTransaction).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CashierDashboardActivity.this, TransactionActivity.class));
+            }
+        });
+
+        findViewById(R.id.cardTransactionHistory).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(CashierDashboardActivity.this, TransactionHistoryActivity.class));
+            }
+        });
     }
 
     @Override

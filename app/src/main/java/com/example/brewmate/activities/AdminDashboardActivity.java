@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.brewmate.R;
 import com.example.brewmate.utils.SessionManager;
@@ -24,11 +25,39 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        findViewById(R.id.cardManageUsers).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminDashboardActivity.this, ManageUsersActivity.class));
+            }
+        });
+
+        findViewById(R.id.cardInventory).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminDashboardActivity.this, InventoryActivity.class));
+            }
+        });
+
+        findViewById(R.id.cardReports).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AdminDashboardActivity.this, ReportsActivity.class));
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        // Hide the "Add User" button on the Admin Dashboard
+        MenuItem addUserItem = menu.findItem(R.id.action_add_user);
+        if (addUserItem != null) {
+            addUserItem.setVisible(false);
+        }
+
         return true;
     }
 

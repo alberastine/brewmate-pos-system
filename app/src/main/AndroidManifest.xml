@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BrewMate">
         <activity
+            android:name=".activities.TransactionHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.TransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ReportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.InventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ManageUsersActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SettingsActivity"
             android:exported="false" />
         <activity
