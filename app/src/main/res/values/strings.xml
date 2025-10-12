@@ -19,7 +19,7 @@
     <string name="num_orders_label">0</string>
     <string name="manage_users_label">Manage Users</string>
     <string name="manage_inventory_label">Manage Inventory</string>
-    <string name="manage_reports_label">View Reports</string>
+    <string name="manage_reports_label">Sales Reports</string>
 
     <!--Labels-->
     <string name="management_label">Management</string>
