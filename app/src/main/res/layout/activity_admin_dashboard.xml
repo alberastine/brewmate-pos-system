@@ -26,7 +26,8 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/brewmate_logo"/>
+                android:src="@drawable/brewmate_logo"
+                android:contentDescription="@string/admin_dashboard_label"/>
 
             <!-- Gap -->
             <Space
@@ -62,7 +63,6 @@
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
-
 
     <View
         android:layout_width="match_parent"
@@ -213,14 +213,27 @@
                         android:contentDescription="@string/manage_users_label"/>
                 </FrameLayout>
 
-                <!-- Text -->
-                <TextView
+                <!-- Vertical layout for title + description -->
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/manage_users_label"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_users_label"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_users_desc"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray_500"/>
+                </LinearLayout>
 
                 <!-- Right arrow -->
                 <ImageView
@@ -270,14 +283,27 @@
                         android:contentDescription="@string/manage_inventory_label"/>
                 </FrameLayout>
 
-                <!-- Text -->
-                <TextView
+                <!-- Vertical layout for title + description -->
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/manage_inventory_label"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_inventory_label"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_inventory_desc"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray_500"/>
+                </LinearLayout>
 
                 <!-- Right arrow -->
                 <ImageView
@@ -326,14 +352,27 @@
                         android:contentDescription="@string/manage_reports_label"/>
                 </FrameLayout>
 
-                <!-- Text -->
-                <TextView
+                <!-- Vertical layout for title + description -->
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/manage_reports_label"
-                    android:textSize="18sp"
-                    android:textColor="@color/black"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_reports_label"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manage_reports_desc"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray_500"/>
+                </LinearLayout>
 
                 <!-- Right arrow -->
                 <ImageView

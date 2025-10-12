@@ -25,5 +25,10 @@
     <string name="management_label">Management</string>
     <string name="admin_dashboard_label">Admin Dashboard</string>
     <string name="welcome_message">Welcome, %1$s</string>
+
+    <!-- Descriptions -->
+    <string name="manage_users_desc">Add, edit, and remove products</string>
+    <string name="manage_inventory_desc">Add and manage cashier accounts</string>
+    <string name="manage_reports_desc">View sales analytics and trends</string>
     
 </resources>

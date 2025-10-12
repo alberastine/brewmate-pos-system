@@ -21,4 +21,7 @@
     <color name="orange_100">#FFEDD5</color>
     <color name="orange_600">#EA580C</color>
 
+    <!-- Description text -->
+    <color name="gray_500">#6B7280</color>
+
 </resources>
