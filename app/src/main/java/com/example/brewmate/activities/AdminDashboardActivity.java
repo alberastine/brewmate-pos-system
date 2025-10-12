@@ -91,10 +91,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
 
-        // Hide the "Add User" button on the Admin Dashboard
-        MenuItem addUserItem = menu.findItem(R.id.action_add_user);
-        if (addUserItem != null) {
-            addUserItem.setVisible(false);
+        // Only show the items you want
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            item.setVisible(item.getItemId() == R.id.action_logout);
         }
 
         return true;
