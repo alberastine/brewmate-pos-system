@@ -5,4 +5,20 @@
     <color name="cream">#F5F0E1</color>
     <color name="coffee_brown">#6F4E37</color>
     <color name="gray">#808080</color>
+
+    <!-- Blue icon colors -->
+    <color name="blue_50">#EBF8FF</color>     <!-- light background -->
+    <color name="blue_100">#BFDBFE</color>    <!-- slightly darker background for square -->
+    <color name="blue_600">#2563EB</color>    <!-- icon color -->
+
+    <!-- Green icon colors -->
+    <color name="green_50">#ECFDF5</color>
+    <color name="green_100">#D1FAE5</color>
+    <color name="green_600">#16A34A</color>
+
+    <!-- Orange icon colors -->
+    <color name="orange_50">#FFF7ED</color>
+    <color name="orange_100">#FFEDD5</color>
+    <color name="orange_600">#EA580C</color>
+
 </resources>

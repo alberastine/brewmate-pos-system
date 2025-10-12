@@ -149,22 +149,24 @@
                 android:gravity="center_vertical"
                 android:padding="20dp">
 
-                <!-- Left icon -->
-                <ImageView
-                    android:id="@+id/iconMenu"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_menu"
-                    android:contentDescription="@string/manage_users_label"/>
+                <!-- Icon container -->
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_blue_100"
+                    android:padding="8dp"
+                    android:layout_marginEnd="12dp">
 
-                <!-- Space between icon and text -->
-                <Space
-                    android:layout_width="12dp"
-                    android:layout_height="0dp" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_menu"
+                        app:tint="@color/blue_600"
+                        android:contentDescription="@string/manage_users_label"/>
+                </FrameLayout>
 
-                <!-- TextView -->
+                <!-- Text -->
                 <TextView
-                    android:id="@+id/textManageUsers"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -174,7 +176,6 @@
 
                 <!-- Right arrow -->
                 <ImageView
-                    android:id="@+id/iconArrow"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_arrow_right"
@@ -205,16 +206,23 @@
                 android:gravity="center_vertical"
                 android:padding="20dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_user"
-                    android:contentDescription="@string/manage_inventory_label"/>
+                <!-- Icon container -->
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_green_100"
+                    android:padding="8dp"
+                    android:layout_marginEnd="12dp">
 
-                <Space
-                    android:layout_width="12dp"
-                    android:layout_height="0dp" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/green_600"
+                        android:contentDescription="@string/manage_inventory_label"/>
+                </FrameLayout>
 
+                <!-- Text -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -223,6 +231,7 @@
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
+                <!-- Right arrow -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -253,16 +262,23 @@
                 android:gravity="center_vertical"
                 android:padding="20dp">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_bar_chart"
-                    android:contentDescription="@string/manage_reports_label"/>
+                <!-- Icon container -->
+                <FrameLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/bg_orange_100"
+                    android:padding="8dp"
+                    android:layout_marginEnd="12dp">
 
-                <Space
-                    android:layout_width="12dp"
-                    android:layout_height="0dp" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_bar_chart"
+                        app:tint="@color/orange_600"
+                        android:contentDescription="@string/manage_reports_label"/>
+                </FrameLayout>
 
+                <!-- Text -->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -271,6 +287,7 @@
                     android:textSize="18sp"
                     android:textColor="@color/black"/>
 
+                <!-- Right arrow -->
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
