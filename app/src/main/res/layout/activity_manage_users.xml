@@ -15,7 +15,7 @@
         android:paddingEnd="16dp"
         android:paddingStart="0dp"
         android:titleTextColor="@color/black"
-        app:title="Manage User"
+        app:title="User Management"
         app:titleTextColor="@color/black"
         app:titleCentered="true" />
 

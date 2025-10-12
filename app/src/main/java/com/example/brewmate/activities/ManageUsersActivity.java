@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import android.widget.TextView;
+import android.view.View;
 
 import com.example.brewmate.R;
 
 import androidx.appcompat.widget.Toolbar;
 
 public class ManageUsersActivity extends AppCompatActivity {
+
+    private TextView tvToolbarSubtitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +28,21 @@ public class ManageUsersActivity extends AppCompatActivity {
 
         // Enable back button on the left
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left); // Left arrow icon
-            getSupportActionBar().setTitle("Manage User"); // Toolbar title
         }
+
+        // Inflate custom toolbar layout
+        View customToolbar = getLayoutInflater().inflate(R.layout.custom_toolbar_manage_users, toolbar, false);
+        toolbar.addView(customToolbar);
+
+        // Reference the subtitle TextView
+        tvToolbarSubtitle = customToolbar.findViewById(R.id.tvToolbarSubtitle);
+
+        // Hard-coded value for now
+        int numberOfCashiers = 3; // This will come from database later
+        tvToolbarSubtitle.setText(getString(R.string.cashiers_count, numberOfCashiers));
 
     }
 

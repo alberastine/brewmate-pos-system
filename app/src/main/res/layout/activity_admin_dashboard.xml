@@ -13,6 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:paddingEnd="8dp"
+        android:paddingStart="0dp"
         app:titleTextColor="@color/black">
 
         <!-- Custom layout for logo + title -->
