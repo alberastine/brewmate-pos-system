@@ -34,6 +34,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Disable default title (removes "BrewMate")
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
         findViewById(R.id.cardManageUsers).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +78,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         // Set directly to TextView
         tvTotalOrders.setText(String.format(Locale.getDefault(), "%,d", totalOrders));
+
+        TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
+        // Hard-coded for now
+        String adminName = "Michael Chen"; // Hard-coded for now
+        // Use getString with placeholder
+        tvToolbarWelcome.setText(getString(R.string.welcome_message, adminName));
 
     }
 

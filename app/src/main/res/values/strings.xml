@@ -23,5 +23,7 @@
 
     <!--Labels-->
     <string name="management_label">Management</string>
+    <string name="admin_dashboard_label">Admin Dashboard</string>
+    <string name="welcome_message">Welcome, %1$s</string>
     
 </resources>

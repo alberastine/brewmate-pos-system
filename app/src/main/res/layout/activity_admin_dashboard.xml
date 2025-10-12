@@ -12,10 +12,58 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
-        android:elevation="6dp"
-        app:title="Admin Dashboard"
-        app:titleTextColor="@color/black"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:titleTextColor="@color/black">
+
+        <!-- Custom layout for logo + title -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Logo -->
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/brewmate_logo"/>
+
+            <!-- Gap -->
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="0dp"/>
+
+            <!-- Vertical layout for title + welcome -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Title -->
+                <TextView
+                    android:id="@+id/toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/admin_dashboard_label"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <!-- Welcome message -->
+                <TextView
+                    android:id="@+id/toolbar_welcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="normal"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="6dp"
