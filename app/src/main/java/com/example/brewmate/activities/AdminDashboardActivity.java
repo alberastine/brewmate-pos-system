@@ -3,9 +3,14 @@ package com.example.brewmate.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import com.example.brewmate.R;
 import com.example.brewmate.utils.SessionManager;
@@ -15,6 +20,9 @@ import androidx.appcompat.widget.Toolbar;
 public class AdminDashboardActivity extends AppCompatActivity {
 
     SessionManager session;
+
+    private TextView tvDailySales;
+    private TextView tvTotalOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,26 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(AdminDashboardActivity.this, ReportsActivity.class));
             }
         });
+
+        // Get the reference to the TextView
+        tvDailySales = findViewById(R.id.tvDailySales);
+
+        // Example: simulate real data (e.g., from a database or API)
+        double todaySales = 15230.50;
+
+        // Format and set it
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("en", "PH"));
+        String displayText = currencyFormat.format(todaySales);
+        tvDailySales.setText(displayText);
+
+        tvTotalOrders = findViewById(R.id.tvTotalOrders);
+
+        // 🧾 Hard-coded total orders for now
+        int totalOrders = 2543;
+
+        // Set directly to TextView
+        tvTotalOrders.setText(String.format(Locale.getDefault(), "%,d", totalOrders));
+
     }
 
     @Override

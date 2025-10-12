@@ -10,4 +10,18 @@
     <string name="content_description_label">App Logo</string>
     <string name="login_label_top">Brew Master POS</string>
     <string name="login_label_bottom">Sign in to your account</string>
+    
+<!--Admin dashboard-->
+    <!--Card Labels-->
+    <string name="daily_sale_label">Today\'s Sale</string>
+    <string name="daily_amt_label">₱0.00</string>
+    <string name="total_orders_label">Orders</string>
+    <string name="num_orders_label">0</string>
+    <string name="manage_users_label">Manage Users</string>
+    <string name="manage_inventory_label">Manage Inventory</string>
+    <string name="manage_reports_label">View Reports</string>
+
+    <!--Labels-->
+    <string name="management_label">Management</string>
+    
 </resources>

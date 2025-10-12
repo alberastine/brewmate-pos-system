@@ -5,31 +5,128 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/cream">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Admin Dashboard" />
+        android:background="@color/white"
+        android:elevation="6dp"
+        app:title="Admin Dashboard"
+        app:titleTextColor="@color/black"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/bottom_shadow" />
 
-    <TextView
-        android:id="@+id/textWelcomeAdmin"
-        android:text="Welcome, Admin!"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"/>
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:padding="8dp">
 
+        <!-- Daily Sales Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTodaySale"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            card_view:cardCornerRadius="12dp"
+            card_view:cardElevation="6dp"
+            card_view:cardBackgroundColor="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daily_sale_label"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tvDailySales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daily_amt_label"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Total Orders Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardOrders"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            card_view:cardCornerRadius="12dp"
+            card_view:cardElevation="6dp"
+            card_view:cardBackgroundColor="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_orders_label"
+                    android:textSize="18sp"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tvTotalOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/num_orders_label"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+<!--Management Cards-->
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:layout_height="wrap_content">
+
+        <!--Management Label-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/management_label"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:textColor="@color/coffee_brown"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
 
         <!-- Manage Users Card -->
         <androidx.cardview.widget.CardView
@@ -37,17 +134,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="20dp"
             card_view:cardCornerRadius="12dp"
             card_view:cardElevation="6dp"
+            card_view:cardBackgroundColor="@color/white"
             android:clickable="true"
+            android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="👤 Manage Users"
+                android:text="@string/manage_users_label"
                 android:textSize="18sp"
-                android:padding="20dp" />
+                android:padding="20dp"
+                android:textColor="@color/black"/>
+
         </androidx.cardview.widget.CardView>
 
         <!-- Inventory Card -->
@@ -56,17 +158,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="20dp"
             card_view:cardCornerRadius="12dp"
             card_view:cardElevation="6dp"
+            card_view:cardBackgroundColor="@color/white"
             android:clickable="true"
+            android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="📦 Manage Inventory"
+                android:text="@string/manage_inventory_label"
                 android:textSize="18sp"
-                android:padding="20dp" />
+                android:padding="20dp"
+                android:textColor="@color/black"/>
         </androidx.cardview.widget.CardView>
 
         <!-- Reports Card -->
@@ -74,17 +180,22 @@
             android:id="@+id/cardReports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="20dp"
             card_view:cardCornerRadius="12dp"
             card_view:cardElevation="6dp"
+            card_view:cardBackgroundColor="@color/white"
             android:clickable="true"
+            android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="🧾 View Reports"
+                android:text="@string/manage_reports_label"
                 android:textSize="18sp"
-                android:padding="20dp" />
+                android:padding="20dp"
+                android:textColor="@color/black"/>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </LinearLayout>
