@@ -80,8 +80,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
         tvTotalOrders.setText(String.format(Locale.getDefault(), "%,d", totalOrders));
 
         TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
-        // Hard-coded for now
-        String adminName = "Michael Chen"; // Hard-coded for now
+        // Get username from Intent
+        String adminName = getIntent().getStringExtra("username");
+        if (adminName == null) adminName = "Admin";
+
         // Use getString with placeholder
         tvToolbarWelcome.setText(getString(R.string.welcome_message, adminName));
 

@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.buttonLogin);
 
-        initializeUsers(); // Initialize default users
+        initializeUsers(); // Ensure default users exist
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +60,17 @@ public class LoginActivity extends AppCompatActivity {
                         if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                             loggedIn = true;
 
+                            Intent intent;
                             if (user.getRole().equals("admin")) {
-                                startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
-                            } else if (user.getRole().equals("cashier")) {
-                                startActivity(new Intent(LoginActivity.this, CashierDashboardActivity.class));
+                                intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
+                            } else {
+                                intent = new Intent(LoginActivity.this, CashierDashboardActivity.class);
                             }
 
-                            finish(); // Close login activity
+                            // Pass the logged-in username
+                            intent.putExtra("username", user.getUsername());
+                            startActivity(intent);
+                            finish();
                             break;
                         }
                     }
@@ -79,20 +83,37 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // Initialize default users in SharedPreferences
+    // Initialize default users and add any missing ones
     private void initializeUsers() {
         SharedPreferences prefs = getSharedPreferences("users_pref", MODE_PRIVATE);
         String usersJson = prefs.getString("users", null);
 
+        Gson gson = new Gson();
+        List<User> users;
+
         if (usersJson == null) {
-            List<User> users = new ArrayList<>();
-            users.add(new User("Alberastine", "admin", "1234"));
-            users.add(new User("Serafin", "cashier", "1234"));
-
-            Gson gson = new Gson();
-            usersJson = gson.toJson(users);
-
-            prefs.edit().putString("users", usersJson).apply();
+            users = new ArrayList<>();
+        } else {
+            Type userListType = new TypeToken<ArrayList<User>>() {}.getType();
+            users = gson.fromJson(usersJson, userListType);
         }
+
+        // Add default users if missing
+        addUserIfNotExists(users, new User("Alberastine", "admin", "1234"));
+        addUserIfNotExists(users, new User("Shaina", "admin", "1234"));
+        addUserIfNotExists(users, new User("Serafin", "cashier", "1234"));
+
+        // Save updated users list
+        prefs.edit().putString("users", gson.toJson(users)).apply();
+    }
+
+    // Helper method to add a user only if they don’t exist
+    private void addUserIfNotExists(List<User> users, User newUser) {
+        for (User user : users) {
+            if (user.getUsername().equals(newUser.getUsername())) {
+                return; // Already exists
+            }
+        }
+        users.add(newUser);
     }
 }
