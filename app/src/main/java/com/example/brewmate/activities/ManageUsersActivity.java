@@ -10,6 +10,9 @@ import android.widget.Toast;
 import android.widget.TextView;
 import android.view.View;
 
+import android.graphics.drawable.Drawable;
+import android.widget.FrameLayout;
+
 import com.example.brewmate.R;
 
 import androidx.appcompat.widget.Toolbar;
@@ -43,6 +46,30 @@ public class ManageUsersActivity extends AppCompatActivity {
         // Hard-coded value for now
         int numberOfCashiers = 3; // This will come from database later
         tvToolbarSubtitle.setText(getString(R.string.cashiers_count, numberOfCashiers));
+
+        FrameLayout editFrame = findViewById(R.id.edit_frame);
+        FrameLayout deleteFrame = findViewById(R.id.delete_frame);
+
+        // Make sure each background drawable is independent
+        Drawable editBg = editFrame.getBackground().mutate();
+        Drawable deleteBg = deleteFrame.getBackground().mutate();
+        editFrame.setBackground(editBg);
+        deleteFrame.setBackground(deleteBg);
+
+        // Click listeners
+        editFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle edit button click
+            }
+        });
+
+        deleteFrame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Handle delete button click
+            }
+        });
 
     }
 
