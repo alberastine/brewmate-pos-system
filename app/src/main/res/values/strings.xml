@@ -32,7 +32,18 @@
     <string name="manage_reports_desc">View sales analytics and trends</string>
 
 <!--User Management Dashboard-->
+    <!-- Toolbar -->
     <string name="users_dashboard_label">User Management</string>
     <string name="cashiers_count">%1$d cashiers</string>
-    
+
+    <!--Labels-->
+    <string name="user_management_cashier_label">Cashier Accounts</string>
+
+    <!-- Cards -->
+    <string name="user_display_label">User Display Card</string>
+    <string name="user_full_name_display_label">Jomar Alberastine</string>
+    <string name="user_email_display_label">jomaralberastine@gmail.com</string>
+    <string name="user_created_at_display_label">Created 1/15/2025</string>
+
+
 </resources>
