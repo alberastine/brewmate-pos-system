@@ -99,9 +99,10 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Add default users if missing
-        addUserIfNotExists(users, new User("Alberastine", "admin", "1234"));
-        addUserIfNotExists(users, new User("Shaina", "admin", "1234"));
-        addUserIfNotExists(users, new User("Serafin", "cashier", "1234"));
+        addUserIfNotExists(users, new User(1, "Alberastine", "Alberastine Admin", "alberastine@example.com", "admin", "1234"));
+        addUserIfNotExists(users, new User(2, "Shaina", "Shaina Admin", "shaina@example.com", "admin", "1234"));
+        addUserIfNotExists(users, new User(3, "Serafin", "Serafin Cashier", "serafin@example.com", "cashier", "1234"));
+        addUserIfNotExists(users, new User(4, "Jomar", "Jomar Cashier", "jomar@example.com", "cashier", "1234"));
 
         // Save updated users list
         prefs.edit().putString("users", gson.toJson(users)).apply();
