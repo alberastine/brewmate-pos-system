@@ -32,7 +32,7 @@
     <string name="manage_reports_desc">View sales analytics and trends</string>
 
 <!--User Management Dashboard-->
-    <string name="users_dashboard_label">Admin Dashboard</string>
+    <string name="users_dashboard_label">User Management</string>
     <string name="cashiers_count">%1$d cashiers</string>
     
 </resources>

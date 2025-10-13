@@ -203,15 +203,15 @@
                 <FrameLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/bg_blue_100"
+                    android:background="@drawable/bg_green_100"
                     android:padding="8dp"
                     android:layout_marginEnd="12dp">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_menu"
-                        app:tint="@color/blue_600"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/green_600"
                         android:contentDescription="@string/manage_users_label"/>
                 </FrameLayout>
 
@@ -273,15 +273,15 @@
                 <FrameLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/bg_green_100"
+                    android:background="@drawable/bg_blue_100"
                     android:padding="8dp"
                     android:layout_marginEnd="12dp">
 
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/ic_user"
-                        app:tint="@color/green_600"
+                        android:src="@drawable/ic_menu"
+                        app:tint="@color/blue_600"
                         android:contentDescription="@string/manage_inventory_label"/>
                 </FrameLayout>
 
