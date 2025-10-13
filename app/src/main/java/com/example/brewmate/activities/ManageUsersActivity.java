@@ -1,25 +1,36 @@
 package com.example.brewmate.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
-import android.widget.TextView;
 import android.view.View;
-
-import android.graphics.drawable.Drawable;
-import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.brewmate.R;
+import com.example.brewmate.adapters.UserAdapter;
+import com.example.brewmate.models.User;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import androidx.appcompat.widget.Toolbar;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageUsersActivity extends AppCompatActivity {
 
     private TextView tvToolbarSubtitle;
+    private RecyclerView recyclerViewUsers;
+    private List<User> cashierList = new ArrayList<>();
+    private UserAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,73 +39,56 @@ public class ManageUsersActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        // Enable back button on the left
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left); // Left arrow icon
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left);
         }
 
-        // Inflate custom toolbar layout
+        // Inflate your custom toolbar layout (kept exactly the same)
         View customToolbar = getLayoutInflater().inflate(R.layout.custom_toolbar_manage_users, toolbar, false);
         toolbar.addView(customToolbar);
-
-        // Reference the subtitle TextView
         tvToolbarSubtitle = customToolbar.findViewById(R.id.tvToolbarSubtitle);
 
-        // Hard-coded value for now
-        int numberOfCashiers = 3; // This will come from database later
-        tvToolbarSubtitle.setText(getString(R.string.cashiers_count, numberOfCashiers));
+        recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
+        recyclerViewUsers.setLayoutManager(new LinearLayoutManager(this));
 
-        FrameLayout editFrame = findViewById(R.id.edit_frame);
-        FrameLayout deleteFrame = findViewById(R.id.delete_frame);
+        // Load users from SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("users_pref", MODE_PRIVATE);
+        String json = prefs.getString("users", "[]");
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<User>>() {}.getType();
+        List<User> allUsers = gson.fromJson(json, listType);
 
-        // Make sure each background drawable is independent
-        Drawable editBg = editFrame.getBackground().mutate();
-        Drawable deleteBg = deleteFrame.getBackground().mutate();
-        editFrame.setBackground(editBg);
-        deleteFrame.setBackground(deleteBg);
-
-        // Click listeners
-        editFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Handle edit button click
+        // Filter only cashiers
+        cashierList.clear();
+        for (User user : allUsers) {
+            if ("cashier".equalsIgnoreCase(user.getRole())) {
+                cashierList.add(user);
             }
-        });
+        }
 
-        deleteFrame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Handle delete button click
-            }
-        });
+        // Update toolbar subtitle count dynamically
+        tvToolbarSubtitle.setText(getString(R.string.cashiers_count, cashierList.size()));
 
+        // Set adapter
+        adapter = new UserAdapter(this, cashierList);
+        recyclerViewUsers.setAdapter(adapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-
-        // Find the Add User menu item
         MenuItem addItem = menu.findItem(R.id.action_add_user);
-
-        // Set a custom layout
-        addItem.setActionView(R.layout.custom_add_user);
-
-        // Get the action view safely
         if (addItem.getActionView() != null) {
-            addItem.getActionView().setOnClickListener(v -> {
-                Toast.makeText(this, "Add User clicked", Toast.LENGTH_SHORT).show();
-            });
+            addItem.getActionView().setOnClickListener(v ->
+                    Toast.makeText(this, "Add User clicked", Toast.LENGTH_SHORT).show());
         }
 
-        // Only show the items you want
+        // Show only Add User
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             item.setVisible(item.getItemId() == R.id.action_add_user);
-
         }
 
         return true;
@@ -105,19 +99,16 @@ public class ManageUsersActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            // Back button clicked → go to AdminDashboardActivity
             Intent intent = new Intent(this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
             return true;
         } else if (id == R.id.action_add_user) {
-            // Add User button clicked
             Toast.makeText(this, "Add User", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 }
