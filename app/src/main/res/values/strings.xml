@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">BrewMate</string>
 
-<!-- Toolbar-->
+    <!-- Toolbar-->
     <string name="logout_title_label">Log out</string>
     <string name="add_user_title_label">Add Cashier</string>
     <string name="back_btn_title_label">Back to Dashboard</string>
-<!--Login-->
+    <!--Login-->
     <string name="username_label">Username</string>
     <string name="username_label_placeholder">Enter your username</string>
     <string name="password_label">Password</string>
@@ -14,8 +14,8 @@
     <string name="content_description_label">App Logo</string>
     <string name="login_label_top">Brew Master POS</string>
     <string name="login_label_bottom">Sign in to your account</string>
-    
-<!--Admin dashboard-->
+
+    <!--Admin dashboard-->
     <!--Card Labels-->
     <string name="daily_sale_label">Today\'s Sale</string>
     <string name="daily_amt_label">₱0.00</string>
@@ -35,7 +35,7 @@
     <string name="manage_inventory_desc">Add and manage cashier accounts</string>
     <string name="manage_reports_desc">View sales analytics and trends</string>
 
-<!--User Management Dashboard-->
+    <!--User Management Dashboard-->
     <!-- Toolbar -->
     <string name="users_dashboard_label">User Management</string>
     <string name="cashiers_count">%1$d cashiers</string>

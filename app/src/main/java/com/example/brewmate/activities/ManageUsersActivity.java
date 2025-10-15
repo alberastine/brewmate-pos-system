@@ -18,7 +18,10 @@ import android.widget.Toast;
 
 import com.example.brewmate.R;
 import com.example.brewmate.adapters.UserAdapter;
+
 import com.example.brewmate.models.User;
+import com.example.brewmate.models.History;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -130,6 +133,8 @@ public class ManageUsersActivity extends AppCompatActivity {
                     saveUsers(allUsers);
                     loadUsers();
 
+                    saveHistory("Cashier deleted", userToDelete.getFullName() + " was removed from the team");
+
                     Toast.makeText(this, "Deleted " + userToDelete.getFullName(), Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancel", null)
@@ -167,10 +172,23 @@ public class ManageUsersActivity extends AppCompatActivity {
         saveUsers(allUsers);
         loadUsers();
 
+        saveHistory("New cashier added", fullName + " joined the team");
+
         Toast.makeText(this, "New cashier added", Toast.LENGTH_SHORT).show();
         addUserForm.setVisibility(View.GONE);
         clearFormFields();
     }
+
+    private void saveHistory(String action, String description) {
+        SharedPreferences prefs = getSharedPreferences("history_pref", MODE_PRIVATE);
+        String json = prefs.getString("history", "[]");
+        Type listType = new TypeToken<List<History>>() {}.getType();
+        List<History> historyList = gson.fromJson(json, listType);
+
+        historyList.add(0, new History(action, description, System.currentTimeMillis())); // add on top
+        prefs.edit().putString("history", gson.toJson(historyList)).apply();
+    }
+
 
     private void clearFormFields() {
         etUsername.setText("");

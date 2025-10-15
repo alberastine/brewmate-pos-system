@@ -2,6 +2,7 @@ package com.example.brewmate.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.view.Menu;
@@ -11,11 +12,22 @@ import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.reflect.Type;
 
 import com.example.brewmate.R;
+import com.example.brewmate.adapters.HistoryAdapter;
+import com.example.brewmate.models.History;
 import com.example.brewmate.utils.SessionManager;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -23,6 +35,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private TextView tvDailySales;
     private TextView tvTotalOrders;
+    private RecyclerView recyclerViewHistory;
+    private HistoryAdapter historyAdapter;
+    private List<History> historyList = new ArrayList<>();
+    private SharedPreferences prefs;
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +104,33 @@ public class AdminDashboardActivity extends AppCompatActivity {
         // Use getString with placeholder
         tvToolbarWelcome.setText(getString(R.string.welcome_message, adminName));
 
+        // History RecyclerView setup
+        recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
+        recyclerViewHistory.setLayoutManager(new LinearLayoutManager(this));
+
+        prefs = getSharedPreferences("history_pref", MODE_PRIVATE);
+        loadHistory();
+
+        historyAdapter = new HistoryAdapter(historyList);
+        recyclerViewHistory.setAdapter(historyAdapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload history whenever activity resumes
+        loadHistory();
+        historyAdapter.updateData(historyList);
+    }
+
+    private void loadHistory() {
+        String json = prefs.getString("history", "[]");
+        Type listType = new TypeToken<List<History>>() {}.getType();
+        historyList = gson.fromJson(json, listType);
+        if (historyList == null) {
+            historyList = new ArrayList<>();
+        }
     }
 
     @Override
