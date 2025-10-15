@@ -153,7 +153,6 @@ public class ManageUsersActivity extends AppCompatActivity {
         MenuItem addItem = menu.findItem(R.id.action_add_user);
         if (addItem.getActionView() != null) {
             addItem.getActionView().setOnClickListener(v ->
-//                    Toast.makeText(this, "Add User clicked", Toast.LENGTH_SHORT).show()
                     toggleFormVisibility()
             );
         } else {

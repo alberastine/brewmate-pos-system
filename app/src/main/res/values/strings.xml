@@ -3,7 +3,7 @@
 
 <!-- Toolbar-->
     <string name="logout_title_label">Log out</string>
-    <string name="add_user_title_label">Add User</string>
+    <string name="add_user_title_label">Add Cashier</string>
     <string name="back_btn_title_label">Back to Dashboard</string>
 <!--Login-->
     <string name="username_label">Username</string>
@@ -48,6 +48,14 @@
     <string name="user_full_name_display_label">Jomar Alberastine</string>
     <string name="user_email_display_label">jomaralberastine@gmail.com</string>
     <string name="user_created_at_display_label">Created 1/15/2025</string>
+
+    <!-- Add cashier -->
+    <string name="add_cashier_username_label">Username</string>
+    <string name="add_cashier_full_name_label">Full name</string>
+    <string name="add_cashier_email_label">Email</string>
+    <string name="add_cashier_password_label">Password</string>
+    <string name="add_cashier_sub_btn_label">Submit</string>
+    <string name="add_cashier_cnl_bnt_label">Cancel</string>
 
 
 </resources>
