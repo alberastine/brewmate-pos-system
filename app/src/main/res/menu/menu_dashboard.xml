@@ -3,20 +3,20 @@
 
     <item
         android:id="@+id/action_logout"
-        android:title="Logout"
+        android:title="@string/logout_title_label"
         android:icon="@drawable/ic_logout"
-        app:showAsAction="always|withText" />
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_add_user"
-        android:title="Add user"
+        android:title="@string/add_user_title_label"
         android:icon="@drawable/ic_add"
         app:showAsAction="always"
         app:actionLayout="@layout/custom_add_user"/>
 
     <item
         android:id="@+id/action_back"
-        android:title="Back to Dashboard"
+        android:title="@string/back_btn_title_label"
         android:icon="@drawable/ic_arrow_left"
         app:showAsAction="always" />
 
