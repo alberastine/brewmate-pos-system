@@ -79,7 +79,8 @@
                     android:inputType="textEmailAddress"
                     android:padding="12dp"
                     android:textColor="#000000"
-                    android:textColorHint="#888888"/>
+                    android:textColorHint="#888888"
+                    android:textCursorDrawable="@null"/>
                 </LinearLayout>
 
             <LinearLayout
@@ -108,7 +109,8 @@
                     android:inputType="textPassword"
                     android:padding="12dp"
                     android:textColor="#000000"
-                    android:textColorHint="#888888"/>
+                    android:textColorHint="#888888"
+                    android:textCursorDrawable="@null"/>
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
