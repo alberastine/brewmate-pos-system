@@ -102,9 +102,41 @@ public class ManageUsersActivity extends AppCompatActivity {
 
         tvToolbarSubtitle.setText(getString(R.string.cashiers_count, cashierList.size()));
 
-        adapter = new UserAdapter(this, cashierList);
+        adapter = new UserAdapter(this, cashierList, userToDelete -> {
+            // Show a confirmation dialog before deleting
+            deleteUser(userToDelete);
+        });
         recyclerViewUsers.setAdapter(adapter);
     }
+
+    private void deleteUser(User userToDelete) {
+        SharedPreferences prefs = getSharedPreferences("users_pref", MODE_PRIVATE);
+        String json = prefs.getString("users", "[]");
+        Type listType = new TypeToken<List<User>>() {}.getType();
+        List<User> allUsers = gson.fromJson(json, listType);
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Delete User")
+                .setMessage("Are you sure you want to delete " + userToDelete.getFullName() + "?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // 👇 Deletion logic moved inside here
+                    for (int i = 0; i < allUsers.size(); i++) {
+                        if (allUsers.get(i).getId() == userToDelete.getId()) {
+                            allUsers.remove(i);
+                            break;
+                        }
+                    }
+
+                    saveUsers(allUsers);
+                    loadUsers();
+
+                    Toast.makeText(this, "Deleted " + userToDelete.getFullName(), Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+
 
     private void saveUsers(List<User> allUsers) {
         SharedPreferences prefs = getSharedPreferences("users_pref", MODE_PRIVATE);

@@ -20,10 +20,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     private final Context context;
     private final List<User> userList;
+    private final OnUserDeleteListener deleteListener;
 
-    public UserAdapter(Context context, List<User> userList) {
+    // 👇 Add a listener interface
+    public interface OnUserDeleteListener {
+        void onUserDelete(User user);
+    }
+
+    public UserAdapter(Context context, List<User> userList, OnUserDeleteListener deleteListener) {
         this.context = context;
         this.userList = userList;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -46,7 +53,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 Toast.makeText(context, "Edit " + user.getFullName(), Toast.LENGTH_SHORT).show());
 
         holder.deleteFrame.setOnClickListener(v ->
-                Toast.makeText(context, "Delete " + user.getFullName(), Toast.LENGTH_SHORT).show());
+//                Toast.makeText(context, "Delete " + user.getFullName(), Toast.LENGTH_SHORT).show()
+                {
+                    if (deleteListener != null) {
+                        deleteListener.onUserDelete(user);
+                    }
+                }
+        );
     }
 
     @Override

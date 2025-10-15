@@ -132,7 +132,6 @@
         android:textSize="24sp"
         android:textStyle="bold"/>
 
-    <!-- Replace the static card with a RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewUsers"
         android:layout_width="match_parent"
