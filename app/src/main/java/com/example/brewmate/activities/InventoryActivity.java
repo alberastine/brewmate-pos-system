@@ -153,6 +153,8 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         clearForm();
         addProductForm.setVisibility(View.GONE);
         editingProduct = null;
+
+        btnSubmit.setText(R.string.add_product_sub_btn_label);
     }
 
     private void clearForm() {
@@ -195,6 +197,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     @Override
     public void onEdit(Product product) {
         editingProduct = product;
+        btnSubmit.setText(R.string.edt_product_sub_bnt_label);
         etProductName.setText(product.getName());
         etPrice.setText(String.valueOf(product.getPrice()));
 
@@ -238,6 +241,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     private void toggleFormVisibility() {
         if (addProductForm.getVisibility() == View.GONE) {
             addProductForm.setVisibility(View.VISIBLE);
+            btnSubmit.setText(R.string.add_product_sub_btn_label);
         } else {
             addProductForm.setVisibility(View.GONE);
         }
