@@ -140,6 +140,12 @@
             android:textSize="24sp"/>
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_coffee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp" />
+
     <!-- Title Cold Drinks Text -->
     <LinearLayout
         android:layout_width="wrap_content"
@@ -164,6 +170,12 @@
             android:textSize="24sp"/>
     </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_cold_drinks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp" />
+
     <!-- Title Pastries Text -->
     <LinearLayout
         android:layout_width="wrap_content"
@@ -187,5 +199,11 @@
             android:textColor="@color/coffee_brown"
             android:textSize="24sp"/>
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_pastries"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp" />
 
 </LinearLayout>

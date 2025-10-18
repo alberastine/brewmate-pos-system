@@ -1,24 +1,48 @@
 package com.example.brewmate.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.brewmate.R;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class InventoryActivity extends AppCompatActivity {
+import com.example.brewmate.R;
+import com.example.brewmate.adapters.ProductAdapter;
+import com.example.brewmate.models.Product;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class InventoryActivity extends AppCompatActivity implements ProductAdapter.OnProductActionListener {
 
     private LinearLayout addProductForm;
     private Button btnCancel, btnSubmit;
+    private EditText etProductName, etPrice, etCategory;
+
+    private RecyclerView coffeeRecycler, coldRecycler, pastryRecycler;
+    private ProductAdapter coffeeAdapter, coldAdapter, pastryAdapter;
+    private List<Product> productList = new ArrayList<>();
+
+    private SharedPreferences sharedPreferences;
+    private static final String PREFS_NAME = "ProductPrefs";
+    private static final String KEY_PRODUCTS = "products";
+    private Gson gson = new Gson();
+    private Product editingProduct = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +60,122 @@ public class InventoryActivity extends AppCompatActivity {
         addProductForm = findViewById(R.id.addProductForm);
         btnCancel = findViewById(R.id.btnCancel);
         btnSubmit = findViewById(R.id.btnSubmit);
+        etProductName = findViewById(R.id.etProductName);
+        etPrice = findViewById(R.id.etPrice);
+        etCategory = findViewById(R.id.etCategory);
 
+        coffeeRecycler = findViewById(R.id.recycler_coffee);
+        coldRecycler = findViewById(R.id.recycler_cold_drinks);
+        pastryRecycler = findViewById(R.id.recycler_pastries);
 
-        // Cancel hides the form
+        // Find actual RecyclerViews in your layout when you add them
+        // coffeeRecycler = findViewById(R.id.recycler_coffee);
+
+        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        loadProducts();
+
+        coffeeAdapter = new ProductAdapter(this, filterByCategory("Coffee"), this);
+        coldAdapter = new ProductAdapter(this, filterByCategory("Cold Drinks"), this);
+        pastryAdapter = new ProductAdapter(this, filterByCategory("Pastries"), this);
+
+        setupRecycler(coffeeRecycler, coffeeAdapter);
+        setupRecycler(coldRecycler, coldAdapter);
+        setupRecycler(pastryRecycler, pastryAdapter);
+
         btnCancel.setOnClickListener(v -> {
             addProductForm.setVisibility(View.GONE);
+            clearForm();
         });
 
-        // Submit creates a new user
-        btnSubmit.setOnClickListener(v -> {
-            Toast.makeText(this, "Submit clicked", Toast.LENGTH_SHORT).show();
-        });
+        btnSubmit.setOnClickListener(v -> saveProduct());
+    }
+
+    private void setupRecycler(RecyclerView recyclerView, ProductAdapter adapter) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void saveProduct() {
+        String name = etProductName.getText().toString().trim();
+        String priceStr = etPrice.getText().toString().trim();
+        String category = etCategory.getText().toString().trim();
+
+        if (name.isEmpty() || priceStr.isEmpty() || category.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double price = Double.parseDouble(priceStr);
+
+        if (editingProduct != null) {
+            editingProduct.setName(name);
+            editingProduct.setPrice(price);
+            editingProduct.setCategory(category);
+        } else {
+            String id = UUID.randomUUID().toString();
+            Product newProduct = new Product(id, name, price, category);
+            productList.add(newProduct);
+        }
+
+        saveProductsToPrefs();
+        refreshAdapters();
+        clearForm();
+        addProductForm.setVisibility(View.GONE);
+        editingProduct = null;
+    }
+
+    private void clearForm() {
+        etProductName.setText("");
+        etPrice.setText("");
+        etCategory.setText("");
+    }
+
+    private void saveProductsToPrefs() {
+        String json = gson.toJson(productList);
+        sharedPreferences.edit().putString(KEY_PRODUCTS, json).apply();
+    }
+
+    private void loadProducts() {
+        String json = sharedPreferences.getString(KEY_PRODUCTS, null);
+        if (json != null) {
+            Type type = new TypeToken<List<Product>>(){}.getType();
+            productList = gson.fromJson(json, type);
+        } else {
+            productList = new ArrayList<>();
+        }
+    }
+
+    private void refreshAdapters() {
+        coffeeAdapter.updateList(filterByCategory("Coffee"));
+        coldAdapter.updateList(filterByCategory("Cold Drinks"));
+        pastryAdapter.updateList(filterByCategory("Pastries"));
+    }
+
+    private List<Product> filterByCategory(String category) {
+        List<Product> filtered = new ArrayList<>();
+        for (Product p : productList) {
+            if (p.getCategory().equalsIgnoreCase(category)) {
+                filtered.add(p);
+            }
+        }
+        return filtered;
+    }
+
+    @Override
+    public void onEdit(Product product) {
+        editingProduct = product;
+        etProductName.setText(product.getName());
+        etPrice.setText(String.valueOf(product.getPrice()));
+        etCategory.setText(product.getCategory());
+        addProductForm.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDelete(Product product) {
+        productList.remove(product);
+        saveProductsToPrefs();
+        refreshAdapters();
+        Toast.makeText(this, "Product deleted", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -54,10 +183,7 @@ public class InventoryActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         MenuItem addItem = menu.findItem(R.id.action_add_product);
         if (addItem.getActionView() != null) {
-            addItem.getActionView().setOnClickListener(v ->
-//                    Toast.makeText(this, "add product", Toast.LENGTH_SHORT).show()
-                            toggleFormVisibility()
-            );
+            addItem.getActionView().setOnClickListener(v -> toggleFormVisibility());
         } else {
             addItem.setOnMenuItemClickListener(item -> {
                 toggleFormVisibility();
@@ -65,7 +191,6 @@ public class InventoryActivity extends AppCompatActivity {
             });
         }
 
-        // Show only Add Product
         for (int i = 0; i < menu.size(); i++) {
             MenuItem item = menu.getItem(i);
             item.setVisible(item.getItemId() == R.id.action_add_product);
@@ -84,16 +209,13 @@ public class InventoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(this, AdminDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
