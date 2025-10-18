@@ -63,6 +63,13 @@
     <!-- Label-->
     <string name="products_count">Products: %1$d</string>
 
+    <!-- Confirm Deletion-->
+    <string name="delete_confirmation_title">Delete Product</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete "%1$s"?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="product_deleted">Product deleted</string>
+
     <!-- Add Product-->
     <string name="add_product_form_title_label">Add New Product</string>
     <string name="add_product_name_label">Product Name</string>

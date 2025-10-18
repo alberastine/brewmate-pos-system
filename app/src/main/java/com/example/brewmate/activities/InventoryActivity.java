@@ -221,11 +221,18 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
 
     @Override
     public void onDelete(Product product) {
-        productList.remove(product);
-        saveProductsToPrefs();
-        refreshAdapters();
-        tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
-        Toast.makeText(this, "Product deleted", Toast.LENGTH_SHORT).show();
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle(R.string.delete_confirmation_title)
+                .setMessage(getString(R.string.delete_confirmation_message, product.getName()))
+                .setPositiveButton(R.string.delete, (dialog, which) -> {
+                    productList.remove(product);
+                    saveProductsToPrefs();
+                    refreshAdapters();
+                    tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
+                    Toast.makeText(this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @Override
