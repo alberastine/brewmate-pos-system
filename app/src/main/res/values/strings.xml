@@ -4,6 +4,7 @@
     <!-- Toolbar-->
     <string name="logout_title_label">Log out</string>
     <string name="add_user_title_label">Add Cashier</string>
+    <string name="add_product_title_label">Add Product</string>
     <string name="back_btn_title_label">Back to Dashboard</string>
     <!--Login-->
     <string name="username_label">Username</string>
@@ -58,5 +59,15 @@
     <string name="add_cashier_sub_btn_label">Add User</string>
     <string name="add_cashier_cnl_bnt_label">Cancel</string>
 
-
+    <!-- Add Product-->
+    <string name="add_product_form_title_label">Add New Product</string>
+    <string name="add_product_name_label">Product Name</string>
+    <string name="add_product_price_label">Price</string>
+    <string name="add_product_category_label">Category</string>
+    <string name="add_product_sub_btn_label">Add Product</string>
+    <string name="add_product_cnl_bnt_label">Cancel</string>
+    <!-- Categories Title -->
+    <string name="category_coffee_label">Coffee</string>
+    <string name="category_cold_drink_label">Cold Drinks</string>
+    <string name="category_pastries_label">Pastries</string>
 </resources>

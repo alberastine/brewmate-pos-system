@@ -4,25 +4,188 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/cream">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Manage Inventory" />
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="0dp"
+        android:titleTextColor="@color/black"
+        app:title="Menu Management"
+        app:titleTextColor="@color/black"
+        app:titleCentered="true" />
 
-    <TextView
-        android:id="@+id/textManageInventory"
-        android:text="Manage Inventory"
-        android:textSize="24sp"
-        android:textStyle="bold"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/bottom_shadow" />
+
+    <!-- Hidden Form For Add Cashier (initially GONE) -->
+    <LinearLayout
+        android:id="@+id/addProductForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/rounded_background"
+        android:elevation="2dp"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_product_form_title_label"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/coffee_brown"
+            android:textSize="20sp"
+            android:textStyle="normal"/>
+
+        <EditText
+            android:id="@+id/etProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textColorHint="#888888"
+            android:backgroundTint="#888888"
+            android:textCursorDrawable="@null"
+            android:hint="@string/add_product_name_label"
+            android:autofillHints=""
+            android:inputType=""/>
+
+        <EditText
+            android:id="@+id/etPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textColorHint="#888888"
+            android:backgroundTint="#888888"
+            android:textCursorDrawable="@drawable/text_cursor_gray"
+            android:hint="@string/add_product_price_label"
+            android:autofillHints=""
+            android:inputType=""
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/etCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textColorHint="#888888"
+            android:backgroundTint="#888888"
+            android:textCursorDrawable="@drawable/text_cursor_gray"
+            android:hint="@string/add_product_category_label"
+            android:autofillHints=""
+            android:inputType=""
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/add_product_cnl_bnt_label"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@android:color/darker_gray"
+                style="?android:attr/buttonBarButtonStyle"/>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/add_product_sub_btn_label"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/coffee_brown"
+                style="?android:attr/buttonBarButtonStyle"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Title Coffee Text -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:padding="20dp"
+        android:baselineAligned="false">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_coffee"
+            app:tint="@color/coffee_brown_600"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/category_coffee_label"
+            android:textColor="@color/coffee_brown"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <!-- Title Cold Drinks Text -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:padding="20dp"
+        android:baselineAligned="false">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ice_ice_cream"
+            app:tint="@color/coffee_brown_600"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/category_cold_drink_label"
+            android:textColor="@color/coffee_brown"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <!-- Title Pastries Text -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top"
+        android:padding="20dp"
+        android:baselineAligned="false">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_cookies_24"
+            app:tint="@color/coffee_brown_600"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/category_pastries_label"
+            android:textColor="@color/coffee_brown"
+            android:textSize="24sp"/>
+    </LinearLayout>
 
 </LinearLayout>

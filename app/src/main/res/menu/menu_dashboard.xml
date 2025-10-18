@@ -11,13 +11,20 @@
         android:id="@+id/action_add_user"
         android:title="@string/add_user_title_label"
         android:icon="@drawable/ic_add"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         app:actionLayout="@layout/custom_add_user"/>
+
+    <item
+        android:id="@+id/action_add_product"
+        android:title="@string/add_product_title_label"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/custom_add_product"/>
 
     <item
         android:id="@+id/action_back"
         android:title="@string/back_btn_title_label"
         android:icon="@drawable/ic_arrow_left"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>
