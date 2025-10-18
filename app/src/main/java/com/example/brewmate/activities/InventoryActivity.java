@@ -35,6 +35,7 @@ import java.util.UUID;
 public class InventoryActivity extends AppCompatActivity implements ProductAdapter.OnProductActionListener {
 
     private TextView tvToolbarSubtitle;
+    private TextView tvCoffeeCategory, tvColdCategory, tvPastryCategory;
     private LinearLayout addProductForm;
     private Button btnCancel, btnSubmit;
     private EditText etProductName, etPrice, etCategory;
@@ -56,6 +57,10 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
+
+        tvCoffeeCategory = findViewById(R.id.tvCoffeeCategory);
+        tvColdCategory = findViewById(R.id.tvColdCategory);
+        tvPastryCategory = findViewById(R.id.tvPastryCategory);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,7 +91,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         loadProducts();
-
+        updateCategoryCounts();
         setupCategorySpinner();
 
         coffeeAdapter = new ProductAdapter(this, filterByCategory("Coffee"), this);
@@ -103,6 +108,16 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         });
 
         btnSubmit.setOnClickListener(v -> saveProduct());
+    }
+
+    private void updateCategoryCounts() {
+        int coffeeCount = filterByCategory("Coffee").size();
+        int coldCount = filterByCategory("Cold Drinks").size();
+        int pastryCount = filterByCategory("Pastries").size();
+
+        tvCoffeeCategory.setText(getString(R.string.category_with_count, "Coffee", coffeeCount));
+        tvColdCategory.setText(getString(R.string.category_with_count, "Cold Drinks", coldCount));
+        tvPastryCategory.setText(getString(R.string.category_with_count, "Pastries", pastryCount));
     }
 
     private void setupCategorySpinner() {
@@ -158,6 +173,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         saveProductsToPrefs();
         tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
         refreshAdapters();
+        updateCategoryCounts();
         clearForm();
         addProductForm.setVisibility(View.GONE);
         editingProduct = null;
@@ -228,6 +244,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
                     productList.remove(product);
                     saveProductsToPrefs();
                     refreshAdapters();
+                    updateCategoryCounts();
                     tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
                     Toast.makeText(this, R.string.product_deleted, Toast.LENGTH_SHORT).show();
                 })

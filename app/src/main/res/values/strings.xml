@@ -62,6 +62,7 @@
 <!-- Inventory Management-->
     <!-- Label-->
     <string name="products_count">Products: %1$d</string>
+    <string name="category_with_count">%1$s (%2$d)</string>
 
     <!-- Confirm Deletion-->
     <string name="delete_confirmation_title">Delete Product</string>
@@ -80,7 +81,7 @@
     <string name="edt_product_sub_bnt_label">Save Changes</string>
 
     <!-- Categories Title -->
-    <string name="category_coffee_label">Coffee</string>
-    <string name="category_cold_drink_label">Cold Drinks</string>
-    <string name="category_pastries_label">Pastries</string>
+    <string name="category_coffee_label">Coffee (0)</string>
+    <string name="category_cold_drink_label">Cold Drinks (0)</string>
+    <string name="category_pastries_label">Pastries (0)</string>
 </resources>

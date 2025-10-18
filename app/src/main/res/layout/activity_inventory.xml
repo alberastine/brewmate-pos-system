@@ -132,6 +132,7 @@
                     app:tint="@color/coffee_brown_600" />
 
                 <TextView
+                    android:id="@+id/tvCoffeeCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -162,6 +163,7 @@
                     app:tint="@color/coffee_brown_600" />
 
                 <TextView
+                    android:id="@+id/tvColdCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -192,6 +194,7 @@
                     app:tint="@color/coffee_brown_600" />
 
                 <TextView
+                    android:id="@+id/tvPastryCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
