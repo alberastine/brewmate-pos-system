@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -33,6 +34,7 @@ import java.util.UUID;
 
 public class InventoryActivity extends AppCompatActivity implements ProductAdapter.OnProductActionListener {
 
+    private TextView tvToolbarSubtitle;
     private LinearLayout addProductForm;
     private Button btnCancel, btnSubmit;
     private EditText etProductName, etPrice, etCategory;
@@ -62,6 +64,11 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left);
         }
+
+        // Inflate custom toolbar layout for inventory
+        View customToolbar = getLayoutInflater().inflate(R.layout.custom_toolbar_manage_users, toolbar, false);
+        toolbar.addView(customToolbar);
+        tvToolbarSubtitle = customToolbar.findViewById(R.id.tvToolbarSubtitle);
 
         addProductForm = findViewById(R.id.addProductForm);
         btnCancel = findViewById(R.id.btnCancel);
@@ -149,6 +156,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         }
 
         saveProductsToPrefs();
+        tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
         refreshAdapters();
         clearForm();
         addProductForm.setVisibility(View.GONE);
@@ -176,6 +184,8 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         } else {
             productList = new ArrayList<>();
         }
+
+        tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
     }
 
     private void refreshAdapters() {
@@ -214,6 +224,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         productList.remove(product);
         saveProductsToPrefs();
         refreshAdapters();
+        tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
         Toast.makeText(this, "Product deleted", Toast.LENGTH_SHORT).show();
     }
 

@@ -59,6 +59,10 @@
     <string name="add_cashier_sub_btn_label">Add User</string>
     <string name="add_cashier_cnl_bnt_label">Cancel</string>
 
+<!-- Inventory Management-->
+    <!-- Label-->
+    <string name="products_count">Products: %1$d</string>
+
     <!-- Add Product-->
     <string name="add_product_form_title_label">Add New Product</string>
     <string name="add_product_name_label">Product Name</string>
@@ -67,6 +71,7 @@
     <string name="add_product_sub_btn_label">Add Product</string>
     <string name="add_product_cnl_bnt_label">Cancel</string>
     <string name="edt_product_sub_bnt_label">Save Changes</string>
+
     <!-- Categories Title -->
     <string name="category_coffee_label">Coffee</string>
     <string name="category_cold_drink_label">Cold Drinks</string>
