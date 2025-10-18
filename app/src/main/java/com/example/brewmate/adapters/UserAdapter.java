@@ -21,16 +21,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private final Context context;
     private final List<User> userList;
     private final OnUserDeleteListener deleteListener;
+    private final OnUserEditListener editListener;
 
     // 👇 Add a listener interface
     public interface OnUserDeleteListener {
         void onUserDelete(User user);
     }
 
-    public UserAdapter(Context context, List<User> userList, OnUserDeleteListener deleteListener) {
+    public interface OnUserEditListener {
+        void onUserEdit(User user);
+    }
+
+    public UserAdapter(Context context, List<User> userList, OnUserDeleteListener deleteListener, OnUserEditListener editListener) {
         this.context = context;
         this.userList = userList;
         this.deleteListener = deleteListener;
+        this.editListener = editListener;
     }
 
     @NonNull
@@ -50,10 +56,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         holder.tvCreatedAt.setText("Created " + user.getCreatedAt());
 
         holder.editFrame.setOnClickListener(v ->
-                Toast.makeText(context, "Edit " + user.getFullName(), Toast.LENGTH_SHORT).show());
+                {
+                    if (editListener != null) {
+                        editListener.onUserEdit(user);
+                    }
+                }
+        );
 
         holder.deleteFrame.setOnClickListener(v ->
-//                Toast.makeText(context, "Delete " + user.getFullName(), Toast.LENGTH_SHORT).show()
                 {
                     if (deleteListener != null) {
                         deleteListener.onUserDelete(user);

@@ -25,7 +25,7 @@
         android:layout_height="6dp"
         android:background="@drawable/bottom_shadow" />
 
-    <!-- 👇 Hidden Form (initially GONE) -->
+    <!-- Hidden Form For Add Cashier (initially GONE) -->
         <LinearLayout
             android:id="@+id/addUserForm"
             android:layout_width="match_parent"

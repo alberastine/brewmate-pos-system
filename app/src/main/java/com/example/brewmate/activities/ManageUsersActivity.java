@@ -40,12 +40,12 @@ public class ManageUsersActivity extends AppCompatActivity {
     private RecyclerView recyclerViewUsers;
     private List<User> cashierList = new ArrayList<>();
     private UserAdapter adapter;
-
     private LinearLayout addUserForm;
     private EditText etUsername, etFullName, etEmail, etPassword;
     private Button btnCancel, btnSubmit;
-
     private Gson gson = new Gson();
+
+    private User editingUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +83,17 @@ public class ManageUsersActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(v -> {
             addUserForm.setVisibility(View.GONE);
             clearFormFields();
+            editingUser = null; // cancel edit
         });
 
         // Submit creates a new user
-        btnSubmit.setOnClickListener(v -> addNewUser());
+        btnSubmit.setOnClickListener(v -> {
+            if (editingUser != null) {
+                updateExistingUser();  // ✅ Edit mode
+            } else {
+                addNewUser();          // ✅ Add mode
+            }
+        });
 
     }
 
@@ -105,11 +112,60 @@ public class ManageUsersActivity extends AppCompatActivity {
 
         tvToolbarSubtitle.setText(getString(R.string.cashiers_count, cashierList.size()));
 
-        adapter = new UserAdapter(this, cashierList, userToDelete -> {
-            // Show a confirmation dialog before deleting
-            deleteUser(userToDelete);
-        });
+        adapter = new UserAdapter(this, cashierList,
+            userToDelete -> {
+                    deleteUser(userToDelete);
+            },
+            userToEdit -> {
+                    showEditForm(userToEdit);
+            }
+        );
         recyclerViewUsers.setAdapter(adapter);
+    }
+
+    private void showEditForm(User user) {
+        editingUser = user;
+        etUsername.setText(user.getUsername());
+        etFullName.setText(user.getFullName());
+        etEmail.setText(user.getEmail());
+        etPassword.setText(user.getPassword());
+        addUserForm.setVisibility(View.VISIBLE);
+    }
+
+    private void updateExistingUser() {
+        String username = etUsername.getText().toString().trim();
+        String fullName = etFullName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (username.isEmpty() || fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SharedPreferences prefs = getSharedPreferences("users_pref", MODE_PRIVATE);
+        String json = prefs.getString("users", "[]");
+        Type listType = new TypeToken<List<User>>() {}.getType();
+        List<User> allUsers = gson.fromJson(json, listType);
+
+        for (User u : allUsers) {
+            if (u.getId() == editingUser.getId()) {
+                u.setUsername(username);
+                u.setFullName(fullName);
+                u.setEmail(email);
+                u.setPassword(password);
+                break;
+            }
+        }
+
+        saveUsers(allUsers);
+        loadUsers();
+        saveHistory("Cashier Updated", fullName + " details were updated");
+
+        Toast.makeText(this, "User updated", Toast.LENGTH_SHORT).show();
+        addUserForm.setVisibility(View.GONE);
+        clearFormFields();
+        editingUser = null;
     }
 
     private void deleteUser(User userToDelete) {
@@ -224,6 +280,7 @@ public class ManageUsersActivity extends AppCompatActivity {
     private void toggleFormVisibility() {
         if (addUserForm.getVisibility() == View.GONE) {
             addUserForm.setVisibility(View.VISIBLE);
+            editingUser = null;
         } else {
             addUserForm.setVisibility(View.GONE);
             clearFormFields();
