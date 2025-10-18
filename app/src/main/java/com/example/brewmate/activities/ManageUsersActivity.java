@@ -245,7 +245,6 @@ public class ManageUsersActivity extends AppCompatActivity {
         prefs.edit().putString("history", gson.toJson(historyList)).apply();
     }
 
-
     private void clearFormFields() {
         etUsername.setText("");
         etFullName.setText("");

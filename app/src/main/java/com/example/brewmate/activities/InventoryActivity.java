@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +36,9 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     private LinearLayout addProductForm;
     private Button btnCancel, btnSubmit;
     private EditText etProductName, etPrice, etCategory;
+
+    private Spinner spinnerCategory;
+    private String selectedCategory = "";
 
     private RecyclerView coffeeRecycler, coldRecycler, pastryRecycler;
     private ProductAdapter coffeeAdapter, coldAdapter, pastryAdapter;
@@ -62,7 +68,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         btnSubmit = findViewById(R.id.btnSubmit);
         etProductName = findViewById(R.id.etProductName);
         etPrice = findViewById(R.id.etPrice);
-        etCategory = findViewById(R.id.etCategory);
+        spinnerCategory = findViewById(R.id.spinnerCategory);
 
         coffeeRecycler = findViewById(R.id.recycler_coffee);
         coldRecycler = findViewById(R.id.recycler_cold_drinks);
@@ -73,6 +79,8 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         loadProducts();
+
+        setupCategorySpinner();
 
         coffeeAdapter = new ProductAdapter(this, filterByCategory("Coffee"), this);
         coldAdapter = new ProductAdapter(this, filterByCategory("Cold Drinks"), this);
@@ -90,6 +98,29 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         btnSubmit.setOnClickListener(v -> saveProduct());
     }
 
+    private void setupCategorySpinner() {
+        String[] categories = {"Coffee", "Cold Drinks", "Pastries"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                categories
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
+
+        spinnerCategory.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                selectedCategory = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                selectedCategory = "";
+            }
+        });
+    }
+
     private void setupRecycler(RecyclerView recyclerView, ProductAdapter adapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -98,7 +129,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     private void saveProduct() {
         String name = etProductName.getText().toString().trim();
         String priceStr = etPrice.getText().toString().trim();
-        String category = etCategory.getText().toString().trim();
+        String category = selectedCategory;
 
         if (name.isEmpty() || priceStr.isEmpty() || category.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -127,7 +158,7 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     private void clearForm() {
         etProductName.setText("");
         etPrice.setText("");
-        etCategory.setText("");
+        spinnerCategory.setSelection(0);
     }
 
     private void saveProductsToPrefs() {
@@ -166,7 +197,12 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         editingProduct = product;
         etProductName.setText(product.getName());
         etPrice.setText(String.valueOf(product.getPrice()));
-        etCategory.setText(product.getCategory());
+
+        // Set spinner selection based on category
+        ArrayAdapter adapter = (ArrayAdapter) spinnerCategory.getAdapter();
+        int position = adapter.getPosition(product.getCategory());
+        spinnerCategory.setSelection(position);
+
         addProductForm.setVisibility(View.VISIBLE);
     }
 
