@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_columnWeight="1"
+    android:layout_rowWeight="1">
+
+    <LinearLayout
+        android:padding="12dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/iconMetric"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:backgroundTint="#E0F7E9"
+            app:tint="#388E3C"
+            android:src="@drawable/ic_trending_up" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvMetricTitle"
+            android:layout_marginTop="8dp"
+            android:text="Week Sales"
+            android:textColor="#6F4E37"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvMetricValue"
+            android:text="$12,000"
+            android:textSize="16sp"
+            android:textColor="#444"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvMetricChange"
+            android:text="+12% from last week"
+            android:textSize="12sp"
+            android:textColor="#2E7D32"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
