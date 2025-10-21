@@ -37,9 +37,13 @@
     <string name="manage_reports_desc">View sales analytics and trends</string>
 
     <!--User Management Dashboard-->
+
     <!-- Toolbar -->
     <string name="users_dashboard_label">User Management</string>
     <string name="cashiers_count">%1$d cashiers</string>
+
+    <string name="sales_report_label">Sales Reports</string>
+    <string name="sales_report_sub_label">Analytics and insights</string>
 
     <!--Labels-->
     <string name="user_management_cashier_label">Cashier Accounts</string>
