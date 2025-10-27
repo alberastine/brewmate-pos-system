@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.brewmate.R;
 import com.example.brewmate.utils.SessionManager;
@@ -26,17 +27,23 @@ public class CashierDashboardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Disable default title (removes "BrewMate")
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
+        // Get username from Intent
+        String cashierName = getIntent().getStringExtra("username");
+        if (cashierName == null) cashierName = "Cashier";
+
+        // Use getString with placeholder
+        tvToolbarWelcome.setText(getString(R.string.welcome_message, cashierName));
+
         findViewById(R.id.cardNewTransaction).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(CashierDashboardActivity.this, TransactionActivity.class));
-            }
-        });
-
-        findViewById(R.id.cardTransactionHistory).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CashierDashboardActivity.this, TransactionHistoryActivity.class));
             }
         });
     }
@@ -44,6 +51,13 @@ public class CashierDashboardActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        // Only show the items you want
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            item.setVisible(item.getItemId() == R.id.action_logout);
+        }
+
         return true;
     }
 

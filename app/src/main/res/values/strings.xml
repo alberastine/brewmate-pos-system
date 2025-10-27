@@ -29,6 +29,7 @@
     <!--Labels-->
     <string name="management_label">Management</string>
     <string name="admin_dashboard_label">Admin Dashboard</string>
+    <string name="cashier_dashboard_label">Cashier Dashboard</string>
     <string name="welcome_message">Welcome, %1$s</string>
 
     <!-- Descriptions -->
@@ -63,7 +64,7 @@
     <string name="add_cashier_sub_btn_label">Add User</string>
     <string name="add_cashier_cnl_bnt_label">Cancel</string>
 
-<!-- Inventory Management-->
+    <!-- Inventory Management-->
     <!-- Label-->
     <string name="products_count">Products: %1$d</string>
     <string name="category_with_count">%1$s (%2$d)</string>
@@ -88,4 +89,16 @@
     <string name="category_coffee_label">Coffee (0)</string>
     <string name="category_cold_drink_label">Cold Drinks (0)</string>
     <string name="category_pastries_label">Pastries (0)</string>
+
+    <string name="category_menu_coffee_label">Coffee</string>
+    <string name="category_menu_cold_drink_label">Cold Drinks</string>
+    <string name="category_menu_pastries_label">Pastries</string>
+
+    <!-- Cashier Dashboard-->
+    <!-- Card Labels-->
+    <string name="new_transaction_label">Start New Order</string>
+    <string name="checkout_transaction_label">Proceed to Checkout</string>
+    <string name="view_transactions_label">View Transactions</string>
+    <string name="add_to_cart_label">Add to cart</string>
+    <string name="view_cart_title_label">View Cart</string>
 </resources>

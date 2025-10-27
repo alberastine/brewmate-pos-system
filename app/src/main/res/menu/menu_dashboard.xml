@@ -27,4 +27,10 @@
         android:icon="@drawable/ic_arrow_left"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_view_cart"
+        android:title="@string/view_cart_title_label"
+        android:icon="@drawable/ic_cart"
+        app:showAsAction="ifRoom"/>
+
 </menu>

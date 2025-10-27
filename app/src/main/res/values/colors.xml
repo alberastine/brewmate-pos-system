@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#4CAF50</color>
+    <color name="lime_green">#24E92D</color>
 
     <color name="gray">#808080</color>
     <color name="dark_gray">#444444</color>
@@ -28,6 +29,7 @@
 
     <!-- Orange icon colors -->
     <color name="orange_50">#FFF7ED</color>
+    <color name="orange_90">#E07A5F</color>
     <color name="orange_100">#FFEDD5</color>
     <color name="orange_600">#EA580C</color>
 
