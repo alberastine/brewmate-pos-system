@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,8 +36,6 @@
             android:layout_height="wrap_content">
 
             <!-- Metrics Grid -->
-
-            <!-- Line Chart -->
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,26 +45,232 @@
                 android:columnCount="2"
                 android:useDefaultMargins="true">
 
-                <include layout="@layout/item_metric_card"
+                <!-- Weekly Sales -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardWeeklySale"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"/>
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
 
-                <include layout="@layout/item_metric_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="20dp">
 
-                <include layout="@layout/item_metric_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"/>
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:backgroundTint="#E0F7E9"
+                            app:tint="@color/green"
+                            android:src="@drawable/ic_money" />
 
-                <include layout="@layout/item_metric_card"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/weekly_sales_label"
+                            android:textSize="18sp"
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tvWeeklySales"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/daily_amt_label"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="+12% from last week"
+                            android:textSize="12sp"
+                            android:textColor="#2E7D32"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Total Orders -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTotalOrders"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"/>
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:backgroundTint="#E0F7E9"
+                            app:tint="@color/blue_600"
+                            android:src="@drawable/ic_cart" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all_total_orders_label"
+                            android:textSize="18sp"
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tvTotalOrders"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/num_orders_label"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="+8% from last week"
+                            android:textSize="12sp"
+                            android:textColor="#2E7D32"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Average Order -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAvgOrder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:backgroundTint="#E0F7E9"
+                            app:tint="@color/violet_600"
+                            android:src="@drawable/ic_trending_up" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/avg_order_label"
+                            android:textSize="18sp"
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tvAvgOrder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/num_order_label"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="+3% from last week"
+                            android:textSize="12sp"
+                            android:textColor="#2E7D32"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Total Customers -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardTotalCustomers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="fill"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="20dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:backgroundTint="#E0F7E9"
+                            app:tint="@color/green"
+                            android:src="@drawable/ic_user" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/all_total_customer"
+                            android:textSize="18sp"
+                            android:textColor="@color/gray" />
+
+                        <TextView
+                            android:id="@+id/tvTotalCustomers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/num_total_customer"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:paddingTop="4dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="+15% from last week"
+                            android:textSize="12sp"
+                            android:textColor="#2E7D32"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
             </GridLayout>
+
 
             <androidx.cardview.widget.CardView
                 app:cardElevation="4dp"

@@ -17,6 +17,7 @@
     <string name="login_label_bottom">Sign in to your account</string>
 
     <!--Admin dashboard-->
+
     <!--Card Labels-->
     <string name="daily_sale_label">Today\'s Sale</string>
     <string name="daily_amt_label">₱0.00</string>
@@ -102,4 +103,12 @@
     <string name="add_to_cart_label">Add to cart</string>
     <string name="view_cart_title_label">View Cart</string>
     <string name="delete_cart_items_label">Empty Cart</string>
+
+    <!--Sales Report Label-->
+    <string name="weekly_sales_label">Week Sales</string>
+    <string name="all_total_orders_label">Total Orders</string>
+    <string name="avg_order_label">Avg Order</string>
+    <string name="num_order_label">₱0.00</string>
+    <string name="all_total_customer">Customers</string>
+    <string name="num_total_customer">0</string>
 </resources>

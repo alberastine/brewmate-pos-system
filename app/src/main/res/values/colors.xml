@@ -17,6 +17,11 @@
     <color name="coffee_brown_50">#1A6F4E37</color>
     <color name="coffee_brown_600">#593926</color>
 
+    <color name="violet_50">#F5F3FF</color>     <!-- light background -->
+    <color name="violet_100">#DDD6FE</color>    <!-- slightly darker background for square -->
+    <color name="violet_600">#7C3AED</color>    <!-- icon color -->
+
+
     <!-- Blue icon colors -->
     <color name="blue_50">#EBF8FF</color>     <!-- light background -->
     <color name="blue_100">#BFDBFE</color>    <!-- slightly darker background for square -->
