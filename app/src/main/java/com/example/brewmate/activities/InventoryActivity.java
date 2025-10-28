@@ -58,6 +58,9 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
+        getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         tvCoffeeCategory = findViewById(R.id.tvCoffeeCategory);
         tvColdCategory = findViewById(R.id.tvColdCategory);
         tvPastryCategory = findViewById(R.id.tvPastryCategory);

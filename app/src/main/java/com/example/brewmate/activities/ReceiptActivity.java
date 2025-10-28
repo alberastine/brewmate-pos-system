@@ -36,6 +36,9 @@ public class ReceiptActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt);
 
+        getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         // Initialize views
         receiptId = findViewById(R.id.receiptId);
         tvSubtotal = findViewById(R.id.tvSubtotal);

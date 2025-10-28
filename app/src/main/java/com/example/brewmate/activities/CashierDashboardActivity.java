@@ -22,6 +22,9 @@ public class CashierDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cashier_dashboard);
 
+        getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         session = new SessionManager(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
