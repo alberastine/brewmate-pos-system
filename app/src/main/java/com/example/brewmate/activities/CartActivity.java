@@ -143,7 +143,20 @@ public class CartActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
             return true;
+        }  else if (item.getItemId() == R.id.action_delete_cart_items) {
+            // Clear cart data from SharedPreferences
+            prefs.edit().remove(KEY_CART).apply();
+
+            // Clear cart list and update UI
+            cartList.clear();
+            recyclerCart.getAdapter().notifyDataSetChanged();
+            updateTotals();
+            updateCheckoutButtonState();
+
+            Toast.makeText(this, "Cart emptied successfully", Toast.LENGTH_SHORT).show();
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
