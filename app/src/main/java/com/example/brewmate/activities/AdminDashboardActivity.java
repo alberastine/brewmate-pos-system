@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,11 +26,13 @@ import com.example.brewmate.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -40,6 +45,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private List<History> historyList = new ArrayList<>();
     private SharedPreferences prefs;
     private Gson gson = new Gson();
+
+    private static final String SALES_PREF = "SalesHistory";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,60 +61,27 @@ public class AdminDashboardActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Disable default title (removes "BrewMate")
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        findViewById(R.id.cardManageUsers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminDashboardActivity.this, ManageUsersActivity.class));
-            }
-        });
-
-        findViewById(R.id.cardInventory).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminDashboardActivity.this, InventoryActivity.class));
-            }
-        });
-
-        findViewById(R.id.cardReports).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminDashboardActivity.this, ReportsActivity.class));
-            }
-        });
-
-        // Get the reference to the TextView
         tvDailySales = findViewById(R.id.tvDailySales);
-
-        // Example: simulate real data (e.g., from a database or API)
-        double todaySales = 15230.50;
-
-        // Format and set it
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("en", "PH"));
-        String displayText = currencyFormat.format(todaySales);
-        tvDailySales.setText(displayText);
-
         tvTotalOrders = findViewById(R.id.tvTotalOrders);
 
-        // 🧾 Hard-coded total orders for now
-        int totalOrders = 2543;
+        findViewById(R.id.cardManageUsers).setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, ManageUsersActivity.class)));
 
-        // Set directly to TextView
-        tvTotalOrders.setText(String.format(Locale.getDefault(), "%,d", totalOrders));
+        findViewById(R.id.cardInventory).setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, InventoryActivity.class)));
+
+        findViewById(R.id.cardReports).setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, ReportsActivity.class)));
 
         TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
-        // Get username from Intent
         String adminName = getIntent().getStringExtra("username");
         if (adminName == null) adminName = "Admin";
-
-        // Use getString with placeholder
         tvToolbarWelcome.setText(getString(R.string.welcome_message, adminName));
 
-        // History RecyclerView setup
         recyclerViewHistory = findViewById(R.id.recyclerViewHistory);
         recyclerViewHistory.setLayoutManager(new LinearLayoutManager(this));
 
@@ -117,14 +91,55 @@ public class AdminDashboardActivity extends AppCompatActivity {
         historyAdapter = new HistoryAdapter(historyList);
         recyclerViewHistory.setAdapter(historyAdapter);
 
+        // 🟣 Load and display real daily metrics
+        updateDailySalesAndOrders();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Reload history whenever activity resumes
         loadHistory();
         historyAdapter.updateData(historyList);
+        updateDailySalesAndOrders();
+    }
+
+    /**
+     * Reads sales data from SalesHistory and displays today's total sales and order count.
+     */
+    private void updateDailySalesAndOrders() {
+        SharedPreferences salesPref = getSharedPreferences(SALES_PREF, MODE_PRIVATE);
+        String data = salesPref.getString("sales_records", "[]");
+
+        double dailySales = 0;
+        int totalOrders = 0;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy, hh:mm:ss a", Locale.getDefault());
+        SimpleDateFormat compareFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        String today = compareFormat.format(new Date());
+
+        try {
+            JSONArray array = new JSONArray(data);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject record = array.getJSONObject(i);
+                String dateTime = record.getString("dateTime");
+                Date saleDate = sdf.parse(dateTime);
+
+                if (saleDate != null && compareFormat.format(saleDate).equals(today)) {
+                    dailySales += record.getDouble("total");
+
+                    JSONArray items = record.getJSONArray("items");
+                    for (int j = 0; j < items.length(); j++) {
+                        totalOrders += items.getJSONObject(j).getInt("quantity");
+                    }
+                }
+            }
+        } catch (JSONException | ParseException e) {
+            e.printStackTrace();
+        }
+
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("en", "PH"));
+        tvDailySales.setText(currencyFormat.format(dailySales));
+        tvTotalOrders.setText(String.format(Locale.getDefault(), "%,d", totalOrders));
     }
 
     private void loadHistory() {
@@ -139,13 +154,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-
-        // Only show the items you want
         for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            item.setVisible(item.getItemId() == R.id.action_logout);
+            menu.getItem(i).setVisible(menu.getItem(i).getItemId() == R.id.action_logout);
         }
-
         return true;
     }
 
