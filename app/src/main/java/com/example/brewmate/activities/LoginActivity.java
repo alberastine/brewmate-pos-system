@@ -65,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
                                 intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
                             } else {
                                 intent = new Intent(LoginActivity.this, CashierDashboardActivity.class);
+                                intent.putExtra("username", username); // username from login form
+                                startActivity(intent);
                             }
 
                             // Pass the logged-in username

@@ -105,8 +105,9 @@ public class ReceiptActivity extends AppCompatActivity {
             tvTotal.setText(String.format(Locale.getDefault(), "₱%.2f", total));
 
             // Get current cashier (replace with your actual logic)
-            String cashierName = getCurrentCashier();
-            tvCashier.setText("Cashier: " + cashierName);
+            String cashierName = getIntent().getStringExtra("username");
+            if (cashierName == null) cashierName = "Cashier"; // fallback
+            tvCashier.setText("Cashier: " + cashierName);;
 
             // Display date/time
             String currentDateTime = new SimpleDateFormat("MM/dd/yyyy, hh:mm:ss a", Locale.getDefault())

@@ -69,10 +69,13 @@ public class CartActivity extends AppCompatActivity {
         // Show totals
         updateTotals();
 
-        // ✅ Single working checkout button listener
+        // checkout button listener
+        String cashierNameTemp = getIntent().getStringExtra("username");
+        final String cashierNameFinal = (cashierNameTemp != null) ? cashierNameTemp : "Cashier";
+
         checkoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, ReceiptActivity.class);
-            intent.putExtra("username", getIntent().getStringExtra("username"));
+            intent.putExtra("username", cashierNameFinal); // pass it along
             startActivity(intent);
         });
     }

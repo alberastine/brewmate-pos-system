@@ -130,7 +130,11 @@ public class TransactionActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.action_view_cart) {
+            String cashierName = getIntent().getStringExtra("username"); // get it from TransactionActivity
+            if (cashierName == null) cashierName = "Cashier";
+
             Intent intent = new Intent(this, CartActivity.class);
+            intent.putExtra("username", cashierName);
             startActivity(intent);
             return true;
         }

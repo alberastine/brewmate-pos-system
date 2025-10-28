@@ -40,11 +40,13 @@ public class CashierDashboardActivity extends AppCompatActivity {
         // Use getString with placeholder
         tvToolbarWelcome.setText(getString(R.string.welcome_message, cashierName));
 
-        findViewById(R.id.cardNewTransaction).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(CashierDashboardActivity.this, TransactionActivity.class));
-            }
+        findViewById(R.id.cardNewTransaction).setOnClickListener(view -> {
+            String cashierNameStamp = getIntent().getStringExtra("username");
+            if (cashierNameStamp == null) cashierNameStamp = "Cashier";
+
+            Intent intent = new Intent(CashierDashboardActivity.this, TransactionActivity.class);
+            intent.putExtra("username", cashierNameStamp); // pass username
+            startActivity(intent);
         });
     }
 
