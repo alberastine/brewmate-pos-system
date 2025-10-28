@@ -66,6 +66,9 @@ public class CartActivity extends AppCompatActivity {
         CartProductAdapter adapter = new CartProductAdapter(this, cartList);
         recyclerCart.setAdapter(adapter);
 
+        // Disable checkout button if cart is empty
+        updateCheckoutButtonState();
+
         // Show totals
         updateTotals();
 
@@ -74,11 +77,27 @@ public class CartActivity extends AppCompatActivity {
         final String cashierNameFinal = (cashierNameTemp != null) ? cashierNameTemp : "Cashier";
 
         checkoutButton.setOnClickListener(v -> {
+            if (cartList == null || cartList.isEmpty()) {
+                Toast.makeText(this, "Cart is empty. Add items first!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Intent intent = new Intent(CartActivity.this, ReceiptActivity.class);
             intent.putExtra("username", cashierNameFinal); // pass it along
             startActivity(intent);
         });
     }
+
+    private void updateCheckoutButtonState() {
+        if (cartList == null || cartList.isEmpty()) {
+            checkoutButton.setEnabled(false);
+            checkoutButton.setCardBackgroundColor(getResources().getColor(R.color.gray));
+        } else {
+            checkoutButton.setEnabled(true);
+            checkoutButton.setCardBackgroundColor(getResources().getColor(R.color.coffee_brown));
+        }
+    }
+
 
     private List<Product> loadCart() {
         String json = prefs.getString(KEY_CART, null);
@@ -108,8 +127,10 @@ public class CartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
         for (int i = 0; i < menu.size(); i++) {
-            menu.getItem(i).setVisible(false);
+            MenuItem item = menu.getItem(i);
+            item.setVisible(item.getItemId() == R.id.action_delete_cart_items);
         }
         return true;
     }
