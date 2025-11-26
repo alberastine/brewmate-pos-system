@@ -71,7 +71,7 @@ public class ManageUsersActivity extends AppCompatActivity {
         recyclerViewUsers = findViewById(R.id.recyclerViewUsers);
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(this));
 
-        // 👇 Initialize form views
+        // Initialize form views
         addUserForm = findViewById(R.id.addUserForm);
         etUsername = findViewById(R.id.etUsername);
         etFullName = findViewById(R.id.etFullName);
@@ -92,9 +92,9 @@ public class ManageUsersActivity extends AppCompatActivity {
         // Submit creates a new user
         btnSubmit.setOnClickListener(v -> {
             if (editingUser != null) {
-                updateExistingUser();  // ✅ Edit mode
+                updateExistingUser();
             } else {
-                addNewUser();          // ✅ Add mode
+                addNewUser();
             }
         });
 

@@ -23,7 +23,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     private final OnUserDeleteListener deleteListener;
     private final OnUserEditListener editListener;
 
-    // 👇 Add a listener interface
     public interface OnUserDeleteListener {
         void onUserDelete(User user);
     }

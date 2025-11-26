@@ -1,9 +1,9 @@
 package com.example.brewmate.models;
 
 public class History {
-    private String action;      // e.g. "New cashier added"
-    private String description; // e.g. "Emma Wilson joined the team"
-    private long timestamp;     // e.g. System.currentTimeMillis()
+    private String action;
+    private String description;
+    private long timestamp;
 
     public History(String action, String description, long timestamp) {
         this.action = action;

@@ -103,9 +103,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         updateDailySalesAndOrders();
     }
 
-    /**
-     * Reads sales data from SalesHistory and displays today's total sales and order count.
-     */
     private void updateDailySalesAndOrders() {
         SharedPreferences salesPref = getSharedPreferences(SALES_PREF, MODE_PRIVATE);
         String data = salesPref.getString("sales_records", "[]");

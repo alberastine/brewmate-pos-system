@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
     private void addUserIfNotExists(List<User> users, User newUser) {
         for (User user : users) {
             if (user.getUsername().equals(newUser.getUsername())) {
-                return; // Already exists
+                return;
             }
         }
         users.add(newUser);

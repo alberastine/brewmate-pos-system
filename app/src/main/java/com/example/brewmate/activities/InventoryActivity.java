@@ -89,9 +89,6 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         coldRecycler = findViewById(R.id.recycler_cold_drinks);
         pastryRecycler = findViewById(R.id.recycler_pastries);
 
-        // Find actual RecyclerViews in your layout when you add them
-        // coffeeRecycler = findViewById(R.id.recycler_coffee);
-
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         loadProducts();
         updateCategoryCounts();

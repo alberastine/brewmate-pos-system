@@ -24,7 +24,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private static final String PREF_NAME = "ProductPrefs";
     private static final String KEY_CART = "cart";
 
-
     public CartProductAdapter(Context context, List<Product> cartList) {
         this.context = context;
         this.cartList = cartList;

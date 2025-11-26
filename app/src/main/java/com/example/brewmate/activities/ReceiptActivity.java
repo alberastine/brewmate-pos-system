@@ -152,9 +152,8 @@ public class ReceiptActivity extends AppCompatActivity {
         return id.toString();
     }
 
-    // Replace with your actual cashier logic
+    // Replace with actual cashier logic
     private String getCurrentCashier() {
-        // Example: return from SharedPreferences or login session
         SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         return pref.getString("cashierName", "Sarah Johnson");
     }

@@ -48,7 +48,7 @@ public class CashierDashboardActivity extends AppCompatActivity {
             if (cashierNameStamp == null) cashierNameStamp = "Cashier";
 
             Intent intent = new Intent(CashierDashboardActivity.this, TransactionActivity.class);
-            intent.putExtra("username", cashierNameStamp); // pass username
+            intent.putExtra("username", cashierNameStamp);
             startActivity(intent);
         });
     }
