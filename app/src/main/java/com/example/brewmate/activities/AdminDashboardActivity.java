@@ -79,6 +79,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
         String adminName = getIntent().getStringExtra("username");
+        if (adminName == null) {
+            adminName = session.getUsername(); // fallback from session
+        }
         if (adminName == null) adminName = "Admin";
         tvToolbarWelcome.setText(getString(R.string.welcome_message, adminName));
 
@@ -91,7 +94,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         historyAdapter = new HistoryAdapter(historyList);
         recyclerViewHistory.setAdapter(historyAdapter);
 
-        // 🟣 Load and display real daily metrics
+        // Load and display real daily metrics
         updateDailySalesAndOrders();
     }
 

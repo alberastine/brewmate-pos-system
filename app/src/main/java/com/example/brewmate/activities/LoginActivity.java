@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.brewmate.R;
 import com.example.brewmate.models.User;
+import com.example.brewmate.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,6 +28,28 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SessionManager sessionManager = new SessionManager(this);
+        String savedRole = sessionManager.getUserRole();
+        String savedUsername = sessionManager.getUsername();
+
+        if (savedRole != null) {
+            Intent intent;
+            if ("admin".equals(savedRole)) {
+                intent = new Intent(this, AdminDashboardActivity.class);
+            } else {
+                intent = new Intent(this, CashierDashboardActivity.class);
+            }
+
+            if (savedUsername != null) {
+                intent.putExtra("username", savedUsername);
+            }
+
+            startActivity(intent);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         // Change status bar color and icons
@@ -64,13 +87,15 @@ public class LoginActivity extends AppCompatActivity {
                         if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                             loggedIn = true;
 
+                            SessionManager sessionManager = new SessionManager(LoginActivity.this);
+                            sessionManager.saveUserRole(user.getUsername(), user.getRole());
+
                             Intent intent;
                             if (user.getRole().equals("admin")) {
                                 intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
                             } else {
                                 intent = new Intent(LoginActivity.this, CashierDashboardActivity.class);
                                 intent.putExtra("username", username); // username from login form
-                                startActivity(intent);
                             }
 
                             // Pass the logged-in username

@@ -38,6 +38,9 @@ public class CashierDashboardActivity extends AppCompatActivity {
         TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
         // Get username from Intent
         String cashierName = getIntent().getStringExtra("username");
+        if (cashierName == null) {
+            cashierName = session.getUsername();
+        }
         if (cashierName == null) cashierName = "Cashier";
 
         // Use getString with placeholder
@@ -45,6 +48,9 @@ public class CashierDashboardActivity extends AppCompatActivity {
 
         findViewById(R.id.cardNewTransaction).setOnClickListener(view -> {
             String cashierNameStamp = getIntent().getStringExtra("username");
+            if (cashierNameStamp == null) {
+                cashierNameStamp = session.getUsername();
+            }
             if (cashierNameStamp == null) cashierNameStamp = "Cashier";
 
             Intent intent = new Intent(CashierDashboardActivity.this, TransactionActivity.class);
