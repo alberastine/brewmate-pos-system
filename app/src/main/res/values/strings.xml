@@ -26,6 +26,8 @@
     <string name="manage_users_label">Manage Users</string>
     <string name="manage_inventory_label">Manage Inventory</string>
     <string name="manage_reports_label">Sales Reports</string>
+    <string name="manage_supplies_label">Supplies</string>
+    <string name="manage_settings_label">Settings</string>
 
     <!--Labels-->
     <string name="management_label">Management</string>
@@ -37,6 +39,8 @@
     <string name="manage_users_desc">Add, edit, and remove products</string>
     <string name="manage_inventory_desc">Add and manage cashier accounts</string>
     <string name="manage_reports_desc">View sales analytics and trends</string>
+    <string name="manage_supplies_desc">Track and order supplies</string>
+    <string name="manage_settings_desc">Configure application settings</string>
 
     <!--User Management Dashboard-->
 

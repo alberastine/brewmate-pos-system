@@ -85,6 +85,12 @@ public class AdminDashboardActivity extends AppCompatActivity {
         findViewById(R.id.cardReports).setOnClickListener(v ->
                 startActivity(new Intent(AdminDashboardActivity.this, ReportsActivity.class)));
 
+        findViewById(R.id.cardSupplies).setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, ManageSuppliesActivity.class)));
+
+        findViewById(R.id.cardSettings).setOnClickListener(v ->
+                startActivity(new Intent(AdminDashboardActivity.this, ManageSettingsActivity.class)));
+
         TextView tvToolbarWelcome = findViewById(R.id.toolbar_welcome);
         String adminName = getIntent().getStringExtra("username");
         if (adminName == null) {
