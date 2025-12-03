@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +41,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private TextView tvDailySales;
     private TextView tvTotalOrders;
+    private View btnClearHistory;
+    private TextView tvEmptyHistory;
     private RecyclerView recyclerViewHistory;
     private HistoryAdapter historyAdapter;
     private List<History> historyList = new ArrayList<>();
@@ -67,6 +70,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         tvDailySales = findViewById(R.id.tvDailySales);
         tvTotalOrders = findViewById(R.id.tvTotalOrders);
+
+        btnClearHistory = findViewById(R.id.btnClearHistory);
+        tvEmptyHistory = findViewById(R.id.tvEmptyHistory);
+
+        btnClearHistory.setOnClickListener(v -> showClearHistoryConfirmation());
 
         findViewById(R.id.cardManageUsers).setOnClickListener(v ->
                 startActivity(new Intent(AdminDashboardActivity.this, ManageUsersActivity.class)));
@@ -102,6 +110,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadHistory();
+        updateHistoryVisibility();
         historyAdapter.updateData(historyList);
         updateDailySalesAndOrders();
     }
@@ -150,6 +159,40 @@ public class AdminDashboardActivity extends AppCompatActivity {
             historyList = new ArrayList<>();
         }
     }
+
+    private void clearHistory() {
+        historyList.clear();
+        prefs.edit().putString("history", "[]").apply();
+        historyAdapter.updateData(historyList);
+        Toast.makeText(this, "Activity history cleared", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showClearHistoryConfirmation() {
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Confirm Delete")
+                .setMessage("Are you sure you want to delete all the history? This action can't be undone.")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    clearHistory();
+                    updateHistoryVisibility();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    private void updateHistoryVisibility() {
+        if (historyList.isEmpty()) {
+            recyclerViewHistory.setVisibility(View.GONE);
+            tvEmptyHistory.setVisibility(View.VISIBLE);
+        } else {
+            recyclerViewHistory.setVisibility(View.VISIBLE);
+            tvEmptyHistory.setVisibility(View.GONE);
+        }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

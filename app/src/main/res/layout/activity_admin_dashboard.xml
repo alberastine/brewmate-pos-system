@@ -380,16 +380,30 @@
             </androidx.cardview.widget.CardView>
 
             <!-- Activity History Section -->
-            <TextView
-                android:id="@+id/tvHistoryTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Activity History"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:paddingHorizontal="20dp"
-                android:paddingBottom="16dp"
-                android:textColor="@color/coffee_brown" />
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tvHistoryTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Activity History"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/coffee_brown"
+                    android:layout_weight="1"/>
+
+                <!-- Clear History Button -->
+                <include
+                    layout="@layout/custom_clear_activity_history"
+                    android:id="@+id/btnClearHistory"/>
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewHistory"
@@ -397,6 +411,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:nestedScrollingEnabled="false"/>
+            <TextView
+                android:id="@+id/tvEmptyHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No activity history yet"
+                android:textSize="16sp"
+                android:textColor="@color/gray_500"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
