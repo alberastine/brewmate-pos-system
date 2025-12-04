@@ -30,6 +30,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnClearPrefs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear All Saved Data"
+                android:backgroundTint="@color/coffee_brown"
+                android:textColor="@color/white"
+                android:padding="12dp"/>
+
+        </LinearLayout>
+
 
     </ScrollView>
 </LinearLayout>
