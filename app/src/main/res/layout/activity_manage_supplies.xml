@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cream">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -25,76 +25,86 @@
         android:layout_height="6dp"
         android:background="@drawable/bottom_shadow" />
 
-    <androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    <!-- Add Supply Form Container -->
+    <LinearLayout
+        android:id="@+id/addSupplyForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/rounded_background"
+        android:elevation="2dp"
+        android:layout_margin="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_supply_form_title_label"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/coffee_brown"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/etSupplierName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Supplier Name"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:backgroundTint="#888888"/>
+
+        <EditText
+            android:id="@+id/etSupplyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Item Name"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:backgroundTint="#888888"/>
+
+        <EditText
+            android:id="@+id/etSupplyQty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Quantity"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:backgroundTint="#888888"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp">
 
-            <!-- Add Supply Form -->
-            <LinearLayout
-                android:id="@+id/addSupplyForm"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:background="@drawable/rounded_background"
-                android:elevation="2dp"
-                android:layout_margin="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone">
+                android:text="@string/add_product_cnl_bnt_label"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="@android:color/darker_gray" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_supply_form_title_label"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/coffee_brown"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/etSupplyName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:backgroundTint="#888888"
-                    android:textCursorDrawable="@null"
-                    android:hint="Supply name" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp">
-
-                    <Button
-                        android:id="@+id/btnCancel"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="@string/add_product_cnl_bnt_label"
-                        android:textColor="#FFFFFF"
-                        android:backgroundTint="@android:color/darker_gray" />
-
-                    <Button
-                        android:id="@+id/btnSubmit"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="Add Supply"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginStart="8dp"
-                        android:backgroundTint="@color/coffee_brown" />
-                </LinearLayout>
-            </LinearLayout>
-
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Add Supply"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="@color/coffee_brown" />
         </LinearLayout>
+    </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    <!-- LIST OF SUPPLIES -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSupplies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"/>
+
 </LinearLayout>
