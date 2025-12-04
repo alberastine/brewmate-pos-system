@@ -25,11 +25,76 @@
         android:layout_height="6dp"
         android:background="@drawable/bottom_shadow" />
 
-    <ScrollView
-        android:background="#FAF3E0"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </ScrollView>
+            <!-- Add Supply Form -->
+            <LinearLayout
+                android:id="@+id/addSupplyForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:background="@drawable/rounded_background"
+                android:elevation="2dp"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_supply_form_title_label"
+                    android:layout_marginBottom="10dp"
+                    android:textColor="@color/coffee_brown"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/etSupplyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:backgroundTint="#888888"
+                    android:textCursorDrawable="@null"
+                    android:hint="Supply name" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <Button
+                        android:id="@+id/btnCancel"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_product_cnl_bnt_label"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="@android:color/darker_gray" />
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Add Supply"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="@color/coffee_brown" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

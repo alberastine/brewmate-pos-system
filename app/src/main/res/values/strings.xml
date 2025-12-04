@@ -115,4 +115,8 @@
     <string name="num_order_label">₱0.00</string>
     <string name="all_total_customer">Customers</string>
     <string name="num_total_customer">0</string>
+
+    <!--supplies labels-->
+    <string name="add_supply_form_title_label">Add New Supply</string>
+    <string name="add_supply_title_label">Add Supply</string>
 </resources>

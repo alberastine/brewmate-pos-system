@@ -22,6 +22,13 @@
         app:actionLayout="@layout/custom_add_product"/>
 
     <item
+        android:id="@+id/action_add_supply"
+        android:title="@string/add_supply_title_label"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/custom_add_supply"/>
+
+    <item
         android:id="@+id/action_back"
         android:title="@string/back_btn_title_label"
         android:icon="@drawable/ic_arrow_left"
