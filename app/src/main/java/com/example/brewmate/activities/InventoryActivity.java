@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.brewmate.R;
 import com.example.brewmate.adapters.ProductAdapter;
 import com.example.brewmate.models.Product;
+import com.example.brewmate.models.ProductSupply;
+import com.example.brewmate.models.Supply;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,18 +40,23 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     private TextView tvCoffeeCategory, tvColdCategory, tvPastryCategory;
     private LinearLayout addProductForm;
     private Button btnCancel, btnSubmit;
-    private EditText etProductName, etPrice, etCategory;
+    private EditText etProductName, etPrice, etCategory, etSupplyPerUnit;
 
-    private Spinner spinnerCategory;
+    private Spinner spinnerCategory, spinnerSupply;
     private String selectedCategory = "";
+    private Supply selectedSupply = null;
 
     private RecyclerView coffeeRecycler, coldRecycler, pastryRecycler;
     private ProductAdapter coffeeAdapter, coldAdapter, pastryAdapter;
     private List<Product> productList = new ArrayList<>();
+    private List<Supply> supplyList = new ArrayList<>();
+    private List<ProductSupply> selectedSupplies = new ArrayList<>();
 
     private SharedPreferences sharedPreferences;
     private static final String PREFS_NAME = "ProductPrefs";
     private static final String KEY_PRODUCTS = "products";
+    private static final String SUPPLY_PREFS_NAME = "SupplyPrefs";
+    private static final String KEY_SUPPLIES = "supplies_list";
     private Gson gson = new Gson();
     private Product editingProduct = null;
 
@@ -83,7 +90,11 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         btnSubmit = findViewById(R.id.btnSubmit);
         etProductName = findViewById(R.id.etProductName);
         etPrice = findViewById(R.id.etPrice);
+        etSupplyPerUnit = findViewById(R.id.etSupplyPerUnit);
         spinnerCategory = findViewById(R.id.spinnerCategory);
+        spinnerSupply = findViewById(R.id.spinnerSupply);
+        TextView tvSelectedSupplies = findViewById(R.id.tvSelectedSupplies);
+        Button btnAddSupplyToProduct = findViewById(R.id.btnAddSupplyToProduct);
 
         coffeeRecycler = findViewById(R.id.recycler_coffee);
         coldRecycler = findViewById(R.id.recycler_cold_drinks);
@@ -91,8 +102,10 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         loadProducts();
+        loadSupplies();
         updateCategoryCounts();
         setupCategorySpinner();
+        setupSupplySpinner();
 
         coffeeAdapter = new ProductAdapter(this, filterByCategory("Coffee"), this);
         coldAdapter = new ProductAdapter(this, filterByCategory("Cold Drinks"), this);
@@ -108,6 +121,9 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         });
 
         btnSubmit.setOnClickListener(v -> saveProduct());
+        btnAddSupplyToProduct.setOnClickListener(v -> {
+            addSupplyToSelection(tvSelectedSupplies);
+        });
     }
 
     private void updateCategoryCounts() {
@@ -143,6 +159,44 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         });
     }
 
+    private void setupSupplySpinner() {
+        List<String> supplyNames = new ArrayList<>();
+        for (Supply supply : supplyList) {
+            supplyNames.add(supply.getSupplyName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                supplyNames
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSupply.setAdapter(adapter);
+
+        spinnerSupply.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                if (position >= 0 && position < supplyList.size()) {
+                    selectedSupply = supplyList.get(position);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                selectedSupply = null;
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadSupplies();
+        setupSupplySpinner();
+        TextView tvSelectedSupplies = findViewById(R.id.tvSelectedSupplies);
+        updateSelectedSuppliesLabel(tvSelectedSupplies);
+    }
+
     private void setupRecycler(RecyclerView recyclerView, ProductAdapter adapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -152,9 +206,12 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         String name = etProductName.getText().toString().trim();
         String priceStr = etPrice.getText().toString().trim();
         String category = selectedCategory;
-
         if (name.isEmpty() || priceStr.isEmpty() || category.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please fill product name, price and category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedSupplies.isEmpty()) {
+            Toast.makeText(this, "Add at least one supply for this product", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -164,9 +221,16 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
             editingProduct.setName(name);
             editingProduct.setPrice(price);
             editingProduct.setCategory(category);
+            editingProduct.setSupplies(new ArrayList<>(selectedSupplies));
         } else {
             String id = UUID.randomUUID().toString();
-            Product newProduct = new Product(id, name, price, category);
+            Product newProduct = new Product(
+                    id,
+                    name,
+                    price,
+                    category,
+                    new ArrayList<>(selectedSupplies)
+            );
             productList.add(newProduct);
         }
 
@@ -185,6 +249,11 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         etProductName.setText("");
         etPrice.setText("");
         spinnerCategory.setSelection(0);
+        spinnerSupply.setSelection(0);
+        etSupplyPerUnit.setText("");
+        selectedSupplies.clear();
+        TextView tvSelectedSupplies = findViewById(R.id.tvSelectedSupplies);
+        updateSelectedSuppliesLabel(tvSelectedSupplies);
     }
 
     private void saveProductsToPrefs() {
@@ -197,11 +266,32 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         if (json != null) {
             Type type = new TypeToken<List<Product>>(){}.getType();
             productList = gson.fromJson(json, type);
+            // Ensure supplies list is not null after deserialization
+            for (Product p : productList) {
+                if (p.getSupplies() == null) {
+                    p.setSupplies(new ArrayList<>());
+                }
+            }
         } else {
             productList = new ArrayList<>();
         }
 
         tvToolbarSubtitle.setText(getString(R.string.products_count, productList.size()));
+    }
+
+    private void loadSupplies() {
+        SharedPreferences supplyPrefs = getSharedPreferences(SUPPLY_PREFS_NAME, Context.MODE_PRIVATE);
+        String json = supplyPrefs.getString(KEY_SUPPLIES, null);
+        if (json != null) {
+            Type type = new TypeToken<List<Supply>>(){}.getType();
+            supplyList = gson.fromJson(json, type);
+        } else {
+            supplyList = new ArrayList<>();
+        }
+
+        if (supplyList.isEmpty()) {
+            Toast.makeText(this, "Please add supplies before creating products", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void refreshAdapters() {
@@ -226,6 +316,9 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         btnSubmit.setText(R.string.edt_product_sub_bnt_label);
         etProductName.setText(product.getName());
         etPrice.setText(String.valueOf(product.getPrice()));
+        selectedSupplies = new ArrayList<>(product.getSupplies() == null ? new ArrayList<>() : product.getSupplies());
+        TextView tvSelectedSupplies = findViewById(R.id.tvSelectedSupplies);
+        updateSelectedSuppliesLabel(tvSelectedSupplies);
 
         // Set spinner selection based on category
         ArrayAdapter adapter = (ArrayAdapter) spinnerCategory.getAdapter();
@@ -274,12 +367,71 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
     }
 
     private void toggleFormVisibility() {
+        if (supplyList.isEmpty()) {
+            Toast.makeText(this, "Add supplies first to link with a product", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (addProductForm.getVisibility() == View.GONE) {
             addProductForm.setVisibility(View.VISIBLE);
             btnSubmit.setText(R.string.add_product_sub_btn_label);
         } else {
             addProductForm.setVisibility(View.GONE);
         }
+    }
+
+    private void addSupplyToSelection(TextView tvSelectedSupplies) {
+        String supplyPerUnitStr = etSupplyPerUnit.getText().toString().trim();
+        if (selectedSupply == null || supplyPerUnitStr.isEmpty()) {
+            Toast.makeText(this, "Select a supply and quantity to add", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        double supplyPerUnit;
+        try {
+            supplyPerUnit = Double.parseDouble(supplyPerUnitStr);
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Enter a valid supply quantity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (supplyPerUnit <= 0) {
+            Toast.makeText(this, "Quantity must be greater than 0", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Replace if already exists
+        boolean replaced = false;
+        for (int i = 0; i < selectedSupplies.size(); i++) {
+            ProductSupply ps = selectedSupplies.get(i);
+            if (ps.getSupplyId().equals(selectedSupply.getId())) {
+                ps.setQuantityRequired(supplyPerUnit);
+                ps.setSupplyName(selectedSupply.getSupplyName());
+                replaced = true;
+                break;
+            }
+        }
+
+        if (!replaced) {
+            ProductSupply ps = new ProductSupply(null, selectedSupply.getId(), selectedSupply.getSupplyName(), supplyPerUnit);
+            selectedSupplies.add(ps);
+        }
+
+        etSupplyPerUnit.setText("");
+        updateSelectedSuppliesLabel(tvSelectedSupplies);
+    }
+
+    private void updateSelectedSuppliesLabel(TextView tvSelectedSupplies) {
+        if (selectedSupplies.isEmpty()) {
+            tvSelectedSupplies.setText(getString(R.string.no_supplies_selected));
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (ProductSupply ps : selectedSupplies) {
+            builder.append(ps.getSupplyName()).append(" (").append(ps.getQuantityRequired()).append(")\n");
+        }
+        tvSelectedSupplies.setText(builder.toString().trim());
     }
 
     @Override

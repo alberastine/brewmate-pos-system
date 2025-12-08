@@ -95,7 +95,13 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         }
 
         if (!exists) {
-            Product newItem = new Product(product.getId(), product.getName(), product.getPrice(), product.getCategory());
+            Product newItem = new Product(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getCategory(),
+                    product.getSupplies()
+            );
             newItem.setQuantity(quantity);
             cart.add(newItem);
         }

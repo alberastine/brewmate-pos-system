@@ -15,12 +15,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
 import com.example.brewmate.R;
+import com.example.brewmate.models.Supply;
+import com.example.brewmate.models.Product;
+import com.example.brewmate.models.ProductSupply;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class ReceiptActivity extends AppCompatActivity {
 
@@ -30,6 +38,9 @@ public class ReceiptActivity extends AppCompatActivity {
 
     private static final String PREF_NAME = "ProductPrefs";
     private static final String SALES_PREF = "SalesHistory";
+    private static final String SUPPLY_PREFS_NAME = "SupplyPrefs";
+    private static final String KEY_SUPPLIES = "supplies_list";
+    private final Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +66,7 @@ public class ReceiptActivity extends AppCompatActivity {
         String cartJson = preferences.getString("cart", "[]");
 
         try {
-            JSONArray cartArray = new JSONArray(cartJson);
+            List<Product> cartItems = loadCartFromJson(cartJson);
             double subtotal = 0.0;
 
             // Generate a random receipt ID
@@ -63,11 +74,10 @@ public class ReceiptActivity extends AppCompatActivity {
             receiptId.setText("Receipt #" + generatedReceiptId);
 
             // Display each item
-            for (int i = 0; i < cartArray.length(); i++) {
-                JSONObject item = cartArray.getJSONObject(i);
-                String name = item.getString("name");
-                double price = item.getDouble("price");
-                int quantity = item.getInt("quantity");
+            for (Product product : cartItems) {
+                String name = product.getName();
+                double price = product.getPrice();
+                int quantity = product.getQuantity();
 
                 double totalPrice = price * quantity;
                 subtotal += totalPrice;
@@ -118,7 +128,9 @@ public class ReceiptActivity extends AppCompatActivity {
             tvDateTime.setText(currentDateTime);
 
             // Save receipt details
-            saveReceiptToSalesHistory(this, generatedReceiptId, cartArray, subtotal, tax, total, cashierName, currentDateTime);
+            saveReceiptToSalesHistory(this, generatedReceiptId, new JSONArray(cartJson), subtotal, tax, total, cashierName, currentDateTime);
+
+            deductSupplies(cartItems);
 
             preferences.edit().remove("cart").apply();
 
@@ -184,5 +196,58 @@ public class ReceiptActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private List<Supply> loadSupplies() {
+        SharedPreferences supplyPrefs = getSharedPreferences(SUPPLY_PREFS_NAME, MODE_PRIVATE);
+        String json = supplyPrefs.getString(KEY_SUPPLIES, null);
+        if (json == null) return new ArrayList<>();
+        Type type = new TypeToken<List<Supply>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+    private void saveSupplies(List<Supply> supplies) {
+        SharedPreferences supplyPrefs = getSharedPreferences(SUPPLY_PREFS_NAME, MODE_PRIVATE);
+        supplyPrefs.edit().putString(KEY_SUPPLIES, gson.toJson(supplies)).apply();
+    }
+
+    private void deductSupplies(List<Product> cartItems) {
+        List<Supply> supplies = loadSupplies();
+
+        for (Product product : cartItems) {
+            if (product.getSupplies() == null) continue;
+            for (ProductSupply ps : product.getSupplies()) {
+                for (Supply supply : supplies) {
+                    if (ps.getSupplyId().equals(supply.getId())) {
+                        double currentQty = parseQuantityToDouble(supply.getQuantity());
+                        double newQty = Math.max(0, currentQty - (ps.getQuantityRequired() * product.getQuantity()));
+                        supply.setQuantity(String.valueOf(newQty));
+                        break;
+                    }
+                }
+            }
+        }
+
+        saveSupplies(supplies);
+    }
+
+    private double parseQuantityToDouble(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
+    private List<Product> loadCartFromJson(String cartJson) {
+        Type type = new TypeToken<List<Product>>() {}.getType();
+        List<Product> list = gson.fromJson(cartJson, type);
+        if (list == null) return new ArrayList<>();
+        for (Product p : list) {
+            if (p.getSupplies() == null) {
+                p.setSupplies(new ArrayList<>());
+            }
+        }
+        return list;
     }
 }

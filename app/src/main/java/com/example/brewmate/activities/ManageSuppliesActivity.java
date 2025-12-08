@@ -101,12 +101,24 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
             return;
         }
 
+        double parsedQty;
+        try {
+            parsedQty = Double.parseDouble(qty);
+            if (parsedQty < 0) {
+                Toast.makeText(this, "Quantity cannot be negative", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (NumberFormatException ex) {
+            Toast.makeText(this, "Please enter a numeric quantity", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (editingSupply != null) {
             // --- EDIT MODE ---
             // Update the existing object directly
             editingSupply.setSupplierName(supplier);
             editingSupply.setSupplyName(item);
-            editingSupply.setQuantity(qty);
+            editingSupply.setQuantity(String.valueOf(parsedQty));
 
             Toast.makeText(this, "Supply Updated", Toast.LENGTH_SHORT).show();
 
@@ -115,7 +127,7 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
         } else {
             // --- ADD MODE ---
             String id = UUID.randomUUID().toString();
-            Supply newSupply = new Supply(id, supplier, item, qty);
+            Supply newSupply = new Supply(id, supplier, item, String.valueOf(parsedQty));
             supplyList.add(newSupply);
 
             Toast.makeText(this, "Supply Added", Toast.LENGTH_SHORT).show();

@@ -81,6 +81,51 @@
                     android:hint="@string/add_product_price_label"
                     android:layout_marginTop="8dp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_product_supply_label"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/coffee_brown"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerSupply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:spinnerMode="dropdown"
+                    android:backgroundTint="#888888" />
+
+                <EditText
+                    android:id="@+id/etSupplyPerUnit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#000000"
+                    android:textColorHint="#888888"
+                    android:backgroundTint="#888888"
+                    android:textCursorDrawable="@drawable/text_cursor_gray"
+                    android:inputType="numberDecimal"
+                    android:hint="@string/add_product_supply_qty_label"
+                    android:layout_marginTop="8dp" />
+
+                <Button
+                    android:id="@+id/btnAddSupplyToProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_supply_to_product"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="@color/coffee_brown"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:id="@+id/tvSelectedSupplies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_supplies_selected"
+                    android:textColor="@color/gray_700"
+                    android:layout_marginTop="8dp" />
+
                 <Spinner
                     android:id="@+id/spinnerCategory"
                     android:layout_width="match_parent"

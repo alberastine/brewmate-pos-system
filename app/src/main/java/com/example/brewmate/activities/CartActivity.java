@@ -19,12 +19,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.brewmate.R;
 import com.example.brewmate.adapters.CartProductAdapter;
 import com.example.brewmate.models.Product;
+import com.example.brewmate.models.Supply;
+import com.example.brewmate.models.ProductSupply;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -35,6 +39,8 @@ public class CartActivity extends AppCompatActivity {
     private Gson gson = new Gson();
     private static final String PREF_NAME = "ProductPrefs";
     private static final String KEY_CART = "cart";
+    private static final String SUPPLY_PREFS_NAME = "SupplyPrefs";
+    private static final String KEY_SUPPLIES = "supplies_list";
     private List<Product> cartList = new ArrayList<>();
 
     @Override
@@ -88,7 +94,9 @@ public class CartActivity extends AppCompatActivity {
 
             Intent intent = new Intent(CartActivity.this, ReceiptActivity.class);
             intent.putExtra("username", cashierNameFinal); // pass it along
-            startActivity(intent);
+            if (hasSufficientSupplies(cartList)) {
+                startActivity(intent);
+            }
         });
     }
 
@@ -108,6 +116,55 @@ public class CartActivity extends AppCompatActivity {
         if (json == null) return new ArrayList<>();
         Type type = new TypeToken<List<Product>>() {}.getType();
         return gson.fromJson(json, type);
+    }
+
+    private List<Supply> loadSupplies() {
+        SharedPreferences supplyPrefs = getSharedPreferences(SUPPLY_PREFS_NAME, Context.MODE_PRIVATE);
+        String json = supplyPrefs.getString(KEY_SUPPLIES, null);
+        if (json == null) return new ArrayList<>();
+        Type type = new TypeToken<List<Supply>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
+
+    private boolean hasSufficientSupplies(List<Product> cart) {
+        List<Supply> supplies = loadSupplies();
+        Map<String, Double> supplyAvailable = new HashMap<>();
+        for (Supply supply : supplies) {
+            supplyAvailable.put(supply.getId(), parseQuantityToDouble(supply.getQuantity()));
+        }
+
+        for (Product product : cart) {
+            if (product.getSupplies() == null || product.getSupplies().isEmpty()) {
+                Toast.makeText(this, "Product " + product.getName() + " is missing linked supplies.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            for (ProductSupply ps : product.getSupplies()) {
+                double perUnit = ps.getQuantityRequired();
+                double needed = perUnit * product.getQuantity();
+                Double available = supplyAvailable.get(ps.getSupplyId());
+
+                if (available == null) {
+                    Toast.makeText(this, "Supply " + ps.getSupplyName() + " for " + product.getName() + " was not found.", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                if (needed > available) {
+                    Toast.makeText(this, "Insufficient " + ps.getSupplyName() + " for " + product.getName(), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private double parseQuantityToDouble(String raw) {
+        try {
+            return Double.parseDouble(raw);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
     }
 
     private double calculateSubtotal() {

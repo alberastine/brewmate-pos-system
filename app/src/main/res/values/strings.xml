@@ -85,6 +85,10 @@
     <string name="add_product_form_title_label">Add New Product</string>
     <string name="add_product_name_label">Product Name</string>
     <string name="add_product_price_label">Price</string>
+    <string name="add_product_supply_label">Linked Supply</string>
+    <string name="add_product_supply_qty_label">Supply needed per product (e.g., 1.5)</string>
+    <string name="add_supply_to_product">Add supply to product</string>
+    <string name="no_supplies_selected">No supplies added yet</string>
     <string name="add_product_category_label">Category</string>
     <string name="add_product_sub_btn_label">Add Product</string>
     <string name="add_product_cnl_bnt_label">Cancel</string>
