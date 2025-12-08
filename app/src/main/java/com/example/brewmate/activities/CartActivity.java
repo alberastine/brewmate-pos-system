@@ -123,14 +123,23 @@ public class CartActivity extends AppCompatActivity {
         String json = supplyPrefs.getString(KEY_SUPPLIES, null);
         if (json == null) return new ArrayList<>();
         Type type = new TypeToken<List<Supply>>() {}.getType();
-        return gson.fromJson(json, type);
+        List<Supply> list = gson.fromJson(json, type);
+        if (list == null) return new ArrayList<>();
+        for (Supply s : list) {
+            if (Double.isNaN(s.getLowStockThreshold())) {
+                s.setLowStockThreshold(0);
+            }
+        }
+        return list;
     }
 
     private boolean hasSufficientSupplies(List<Product> cart) {
         List<Supply> supplies = loadSupplies();
         Map<String, Double> supplyAvailable = new HashMap<>();
+        Map<String, Double> supplyThresholds = new HashMap<>();
         for (Supply supply : supplies) {
             supplyAvailable.put(supply.getId(), parseQuantityToDouble(supply.getQuantity()));
+            supplyThresholds.put(supply.getId(), supply.getLowStockThreshold());
         }
 
         for (Product product : cart) {
@@ -143,14 +152,26 @@ public class CartActivity extends AppCompatActivity {
                 double perUnit = ps.getQuantityRequired();
                 double needed = perUnit * product.getQuantity();
                 Double available = supplyAvailable.get(ps.getSupplyId());
+                Double threshold = supplyThresholds.get(ps.getSupplyId());
+                if (threshold == null) threshold = 0d;
 
                 if (available == null) {
                     Toast.makeText(this, "Supply " + ps.getSupplyName() + " for " + product.getName() + " was not found.", Toast.LENGTH_LONG).show();
                     return false;
                 }
 
+                if (threshold > 0 && available <= threshold) {
+                    Toast.makeText(this, getString(R.string.low_stock_block_message, ps.getSupplyName(), threshold), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
                 if (needed > available) {
                     Toast.makeText(this, "Insufficient " + ps.getSupplyName() + " for " + product.getName(), Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                if (threshold > 0 && (available - needed) <= threshold) {
+                    Toast.makeText(this, getString(R.string.low_stock_block_message, ps.getSupplyName(), threshold), Toast.LENGTH_LONG).show();
                     return false;
                 }
             }

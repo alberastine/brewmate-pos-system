@@ -36,7 +36,7 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
 
     private LinearLayout addSupplyForm;
     private Button btnCancel, btnSubmit;
-    private EditText etSupplierName, etSupplyName, etSupplyQty;
+    private EditText etSupplierName, etSupplyName, etSupplyQty, etLowStockThreshold;
 
     private RecyclerView recyclerSupplies;
     private SupplyAdapter supplyAdapter;
@@ -71,6 +71,7 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
         etSupplierName = findViewById(R.id.etSupplierName);
         etSupplyName = findViewById(R.id.etSupplyName);
         etSupplyQty = findViewById(R.id.etSupplyQty);
+        etLowStockThreshold = findViewById(R.id.etLowStockThreshold);
         recyclerSupplies = findViewById(R.id.recyclerSupplies);
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -95,6 +96,7 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
         String supplier = etSupplierName.getText().toString().trim();
         String item = etSupplyName.getText().toString().trim();
         String qty = etSupplyQty.getText().toString().trim();
+        String thresholdStr = etLowStockThreshold.getText().toString().trim();
 
         if (supplier.isEmpty() || item.isEmpty() || qty.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -113,12 +115,27 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
             return;
         }
 
+        double threshold = 0;
+        if (!thresholdStr.isEmpty()) {
+            try {
+                threshold = Double.parseDouble(thresholdStr);
+                if (threshold < 0) {
+                    Toast.makeText(this, "Low stock threshold cannot be negative", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (NumberFormatException ex) {
+                Toast.makeText(this, "Enter a numeric low stock threshold", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         if (editingSupply != null) {
             // --- EDIT MODE ---
             // Update the existing object directly
             editingSupply.setSupplierName(supplier);
             editingSupply.setSupplyName(item);
             editingSupply.setQuantity(String.valueOf(parsedQty));
+            editingSupply.setLowStockThreshold(threshold);
 
             Toast.makeText(this, "Supply Updated", Toast.LENGTH_SHORT).show();
 
@@ -127,7 +144,7 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
         } else {
             // --- ADD MODE ---
             String id = UUID.randomUUID().toString();
-            Supply newSupply = new Supply(id, supplier, item, String.valueOf(parsedQty));
+            Supply newSupply = new Supply(id, supplier, item, String.valueOf(parsedQty), threshold);
             supplyList.add(newSupply);
 
             Toast.makeText(this, "Supply Added", Toast.LENGTH_SHORT).show();
@@ -149,6 +166,7 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
         etSupplierName.setText(supply.getSupplierName());
         etSupplyName.setText(supply.getSupplyName());
         etSupplyQty.setText(supply.getQuantity());
+        etLowStockThreshold.setText(String.valueOf(supply.getLowStockThreshold()));
 
         // Change Button Text to indicate update
         btnSubmit.setText("Update Supply");
@@ -187,12 +205,36 @@ public class ManageSuppliesActivity extends AppCompatActivity  implements Supply
         } else {
             supplyList = new ArrayList<>();
         }
+
+        int lowCount = 0;
+        for (Supply s : supplyList) {
+            if (Double.isNaN(s.getLowStockThreshold())) {
+                s.setLowStockThreshold(0);
+            }
+            double qtyVal = parseDoubleSafe(s.getQuantity());
+            if (s.getLowStockThreshold() > 0 && qtyVal <= s.getLowStockThreshold()) {
+                lowCount++;
+            }
+        }
+
+        if (lowCount > 0) {
+            Toast.makeText(this, lowCount + " supplies are low. Please restock.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private double parseDoubleSafe(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
     }
 
     private void clearForm() {
         etSupplierName.setText("");
         etSupplyName.setText("");
         etSupplyQty.setText("");
+        etLowStockThreshold.setText("");
 
         btnSubmit.setText("Add Supply");
 

@@ -203,7 +203,14 @@ public class ReceiptActivity extends AppCompatActivity {
         String json = supplyPrefs.getString(KEY_SUPPLIES, null);
         if (json == null) return new ArrayList<>();
         Type type = new TypeToken<List<Supply>>() {}.getType();
-        return gson.fromJson(json, type);
+        List<Supply> list = gson.fromJson(json, type);
+        if (list == null) return new ArrayList<>();
+        for (Supply s : list) {
+            if (Double.isNaN(s.getLowStockThreshold())) {
+                s.setLowStockThreshold(0);
+            }
+        }
+        return list;
     }
 
     private void saveSupplies(List<Supply> supplies) {

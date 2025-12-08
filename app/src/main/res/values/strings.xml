@@ -89,6 +89,9 @@
     <string name="add_product_supply_qty_label">Supply needed per product (e.g., 1.5)</string>
     <string name="add_supply_to_product">Add supply to product</string>
     <string name="no_supplies_selected">No supplies added yet</string>
+    <string name="low_stock_threshold_hint">Low stock threshold (optional)</string>
+    <string name="low_stock_label">Low stock</string>
+    <string name="low_stock_block_message">%1$s is low (≤ %2$.2f). Cannot order.</string>
     <string name="add_product_category_label">Category</string>
     <string name="add_product_sub_btn_label">Add Product</string>
     <string name="add_product_cnl_bnt_label">Cancel</string>

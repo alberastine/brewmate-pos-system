@@ -292,6 +292,12 @@ public class InventoryActivity extends AppCompatActivity implements ProductAdapt
         if (supplyList.isEmpty()) {
             Toast.makeText(this, "Please add supplies before creating products", Toast.LENGTH_LONG).show();
         }
+
+        for (Supply s : supplyList) {
+            if (Double.isNaN(s.getLowStockThreshold())) {
+                s.setLowStockThreshold(0);
+            }
+        }
     }
 
     private void refreshAdapters() {

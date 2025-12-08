@@ -40,6 +40,15 @@ public class SupplyAdapter extends RecyclerView.Adapter<SupplyAdapter.SupplyView
         holder.tvSupplier.setText("Supplier: " + supply.getSupplierName());
         holder.tvQuantity.setText(supply.getQuantity());
 
+        double qtyVal = parseDoubleSafe(supply.getQuantity());
+        double threshold = supply.getLowStockThreshold();
+        if (threshold > 0 && qtyVal <= threshold) {
+            holder.tvQuantity.setText(supply.getQuantity() + "  • " + holder.itemView.getContext().getString(R.string.low_stock_label));
+            holder.tvQuantity.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.red_600));
+        } else {
+            holder.tvQuantity.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.black));
+        }
+
         holder.btnDelete.setOnClickListener(v -> listener.onDelete(supply));
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(supply));
     }
@@ -65,6 +74,14 @@ public class SupplyAdapter extends RecyclerView.Adapter<SupplyAdapter.SupplyView
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             btnDelete = itemView.findViewById(R.id.btnDeleteSupply);
             btnEdit = itemView.findViewById(R.id.btnEditSupply);
+        }
+    }
+
+    private double parseDoubleSafe(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            return 0;
         }
     }
 }
