@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.brewmate.R;
 import com.example.brewmate.models.User;
 import com.example.brewmate.utils.SessionManager;
+import com.example.brewmate.utils.LowStockChecker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -61,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.buttonLogin);
 
         initializeUsers(); // Ensure default users exist
+
+        // Check low stock once per app launch; fine to show on login screen too
+        LowStockChecker.checkAndShow(this);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

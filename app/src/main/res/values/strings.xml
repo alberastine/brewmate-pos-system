@@ -92,6 +92,8 @@
     <string name="low_stock_threshold_hint">Low stock threshold (optional)</string>
     <string name="low_stock_label">Low stock</string>
     <string name="low_stock_block_message">%1$s is low (≤ %2$.2f). Cannot order.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="low_stock_dialog_title">Low Stock Alert</string>
     <string name="add_product_category_label">Category</string>
     <string name="add_product_sub_btn_label">Add Product</string>
     <string name="add_product_cnl_bnt_label">Cancel</string>

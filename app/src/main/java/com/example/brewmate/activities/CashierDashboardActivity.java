@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.brewmate.R;
 import com.example.brewmate.utils.SessionManager;
+import com.example.brewmate.utils.LowStockChecker;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -57,6 +58,12 @@ public class CashierDashboardActivity extends AppCompatActivity {
             intent.putExtra("username", cashierNameStamp);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LowStockChecker.checkAndShow(this);
     }
 
     @Override

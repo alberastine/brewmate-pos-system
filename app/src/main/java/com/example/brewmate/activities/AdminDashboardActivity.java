@@ -24,6 +24,7 @@ import com.example.brewmate.R;
 import com.example.brewmate.adapters.HistoryAdapter;
 import com.example.brewmate.models.History;
 import com.example.brewmate.utils.SessionManager;
+import com.example.brewmate.utils.LowStockChecker;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -119,6 +120,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         updateHistoryVisibility();
         historyAdapter.updateData(historyList);
         updateDailySalesAndOrders();
+        LowStockChecker.checkAndShow(this);
     }
 
     private void updateDailySalesAndOrders() {
